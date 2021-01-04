@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<file xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <categories>
+    <category cid="1" name="Stor" />
+    <category cid="2" name="Mellem" />
+    <category cid="3" name="Lille" />
+  </categories>
+  <pizzas>
+    <pizza pId="0" name="Margherita" price="45kr">
+      <ingredients>Ost, Tomatsovs</ingredients>
+    </pizza>
+    <pizza pId="2" name="Skinke pizza" price="50kr">
+      <ingredients>Skinke, Ost, Tomatsovs</ingredients>
+    </pizza>
+    <pizza pId="2" name="Hawaii" price="59kr">
+      <ingredients>Skinke, Ost, Tomatsovs, Ananas</ingredients>
+    </pizza>
+  </pizzas>
+</file>

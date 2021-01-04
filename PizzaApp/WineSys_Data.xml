@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<winesys xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <users>
+    <user name="Admin" password="admin1234" />
+    <user name="Henrik" password="asdf1234" />
+    <user name="Rikke" password="rikke123" />
+    <user name="Torben" password="torb1234" />
+  </users>
+  <categories>
+    <category cid="1" name="Stor" />
+    <category cid="2" name="Mellem" />
+    <category cid="3" name="Lille" />
+  </categories>
+  <ingredients>
+    <ingredient iId="0" name="Skinke" vegan="Nej"/>
+    <ingredient iId="1" name="Ost" vegan="Nej"/>
+    <ingredient iId="2" name="Tomat sovs" vegan="Ja"/>
+    <ingredient iId="3" name="Ananas" vegan="Ja"/>
+  </ingredients>
+  <Pizzas>
+    <Pizza pId="0" name="Margherita">
+      <ingredients>
+        <ingredient>1</ingredient>
+        <ingredient>2</ingredient>
+      </ingredients>
+    </Pizza>
+    <Pizza pId="2" name="Skinke pizza">
+      <ingredients>
+        <ingredient>1</ingredient>
+        <ingredient>2</ingredient>
+        <ingredient>0</ingredient>
+      </ingredients>
+    </Pizza>
+    <Pizza pId="2" name="Hawaii">
+      <ingredients>
+        <ingredient>1</ingredient>
+        <ingredient>2</ingredient>
+        <ingredient>0</ingredient>
+        <ingredient>4</ingredient>
+      </ingredients>
+    </Pizza>
+  </Pizzas>
+</winesys>
