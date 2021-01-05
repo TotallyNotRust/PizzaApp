@@ -5,15 +5,25 @@
     <category cid="2" name="Mellem" />
     <category cid="3" name="Lille" />
   </categories>
+  <sauces>
+    <sauce sId="1" name="Tomat sovs"/>
+    <sauce sId="1" name="Chili sovs"/>
+  </sauces>
+  <doughs>
+    <dough dId="1" name="Grov"/>
+    <dough dId="2" name="Hvidt"/>
+  </doughs>
+  <ingredients>
+    <ingredient iId="0" name="Skinke"/>
+    <ingredient iId="1" name="Ananas"/>
+    <ingredient iId="2" name="Ost"/>
+  </ingredients>
   <pizzas>
-    <pizza pId="0" name="Margherita" price="45kr">
-      <ingredients>Ost, Tomatsovs</ingredients>
+    <pizza pId="0" name="Margherita" price="45kr" ingredients="0">
     </pizza>
-    <pizza pId="2" name="Skinke pizza" price="50kr">
-      <ingredients>Skinke, Ost, Tomatsovs</ingredients>
+    <pizza pId="2" name="Skinke pizza" price="50kr" ingredients="0,1">
     </pizza>
-    <pizza pId="2" name="Hawaii" price="59kr">
-      <ingredients>Skinke, Ost, Tomatsovs, Ananas</ingredients>
+    <pizza pId="2" name="Hawaii" price="59kr" ingredients="0,1,2">
     </pizza>
   </pizzas>
 </file>

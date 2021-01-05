@@ -13,7 +13,9 @@ namespace PizzaApp
 {
     public partial class pizzaApp : Form
     {
-        // XMLLoader loader = XMLLoader.LoadXML("..\\..\\PizzaDatabase.xml");
+        XMLLoader loader = XMLLoader.LoadXML("..\\..\\PizzaDatabase.xml");
+        List<Ingredient> ingredients = new List<Ingredient>();
+        List<Pizza> Pizzas = new List<Pizza>();
         public pizzaApp()
         {
             InitializeComponent();
@@ -32,34 +34,43 @@ namespace PizzaApp
 
         private void pizzaApp_Load(object sender, EventArgs e)
         {
-            populateLists();
+            populateLists(loader);
         }
-        private void populateLists() // XMLLoader p_sys
+        private string ingredientList(string needIngredients, List<Ingredient> allIngredients)
         {
-            //Placeholder skal være i xml fil i fremtiden
-            PizzaObject Skinke = new PizzaObject(); // Laver pizza object
-            Skinke.setValues("Skinke", "49kr", "Bund, Ost, Skinke"); // Giver data til pizza object
-            ListViewItem item = new ListViewItem(Skinke.name); // Laver listviewitem object som kan puttes i list i gui
-            item.SubItems.Add(Skinke.ingredients); // Giver data til listviewitem object
-            item.SubItems.Add(Skinke.price); // --||--
-            pizzaMenu.Items.Add(item); // Putter listviewitem object ind i liste på gui
+            string str = "";
+            string[] newIngredients = needIngredients.Split(',');
+            foreach(string ingredient in newIngredients)
+            {
+                str = str + allIngredients.ElementAt(Convert.ToInt32(ingredient)).name + ", ";
+            }
+            return str;
+        }
 
-            PizzaObject Hawaii = new PizzaObject();
-            Hawaii.setValues("Hawaii", "49kr", "Bund, Ost, Skinke, Ananas");
-            item = new ListViewItem(Hawaii.name);
-            item.SubItems.Add(Hawaii.ingredients);
-            item.SubItems.Add(Hawaii.price);
-            pizzaMenu.Items.Add(item);
+        private void populateLists(XMLLoader p_sys) // XMLLoader p_sys
+        {
+            foreach(Ingredient ing in p_sys.Ingredients.Ingredient)
+            {
+                ingredients.Add(ing);
+            }
+            foreach (Pizza m_product in p_sys.Pizzas.Pizza) // køere gennem alle produkter
+            {
+                ListViewItem Item = new ListViewItem(m_product.name); // Laver nyt listviewitem til produkt or giver den navnet på produktet
 
-            //Kode til xml loading, virker ikke
-            //    foreach (Pizza m_product in p_sys.Pizzas.Pizza) // køere gennem alle produkter
-            //    {
-            //        ListViewItem Item = new ListViewItem(m_product.name); // Laver nyt item til produkt
-            //        Item.SubItems.Add(m_product.ingredients); // Definere navn
-            //        Item.SubItems.Add(m_product.price);
-            //        pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
-            //    }
-            //}
+                Item.SubItems.Add(ingredientList(m_product.ingredients, ingredients)); // Giver listviewitemet ingredienser
+                Item.SubItems.Add(m_product.price); // og pris
+                pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
+            }
+
+            foreach(Dough Dough in p_sys.Doughs.Dough)
+            {
+                pizzaDough.Items.Add(Dough.name);
+            }
+            foreach (Sauce Sauce in p_sys.Sauces.Sauce)
+            {
+                pizzaSauce.Items.Add(Sauce.name);
+            }
+
         }
         public class PizzaObject
         {
@@ -72,6 +83,26 @@ namespace PizzaApp
                 price = Price;
                 ingredients = Ingredients;
             }
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pizzaSauce_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

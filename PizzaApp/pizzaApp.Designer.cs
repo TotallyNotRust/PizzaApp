@@ -43,15 +43,19 @@ namespace PizzaApp
             this.infoLabelName = new System.Windows.Forms.Label();
             this.cartLabelName = new System.Windows.Forms.Label();
             this.pizzaTotal = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.pizzaDough = new System.Windows.Forms.ComboBox();
+            this.pizzaSauce = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pizzaTextBody
             // 
             this.pizzaTextBody.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.pizzaTextBody.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pizzaTextBody.Location = new System.Drawing.Point(213, 115);
+            this.pizzaTextBody.Location = new System.Drawing.Point(213, 110);
             this.pizzaTextBody.Name = "pizzaTextBody";
-            this.pizzaTextBody.Size = new System.Drawing.Size(357, 308);
+            this.pizzaTextBody.Size = new System.Drawing.Size(378, 227);
             this.pizzaTextBody.TabIndex = 2;
             // 
             // label1
@@ -62,17 +66,17 @@ namespace PizzaApp
             this.label1.Location = new System.Drawing.Point(213, 55);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(3);
-            this.label1.Size = new System.Drawing.Size(301, 45);
+            this.label1.Size = new System.Drawing.Size(378, 45);
             this.label1.TabIndex = 3;
             // 
             // addPizzaButton
             // 
             this.addPizzaButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.addPizzaButton.Location = new System.Drawing.Point(213, 426);
+            this.addPizzaButton.Location = new System.Drawing.Point(213, 356);
             this.addPizzaButton.Name = "addPizzaButton";
-            this.addPizzaButton.Size = new System.Drawing.Size(125, 42);
+            this.addPizzaButton.Size = new System.Drawing.Size(133, 48);
             this.addPizzaButton.TabIndex = 4;
-            this.addPizzaButton.Text = "Tilføj";
+            this.addPizzaButton.Text = "Extra";
             this.addPizzaButton.UseVisualStyleBackColor = true;
             // 
             // pizzaMenu
@@ -84,7 +88,7 @@ namespace PizzaApp
             this.pizzaMenu.FullRowSelect = true;
             this.pizzaMenu.GridLines = true;
             this.pizzaMenu.HideSelection = false;
-            this.pizzaMenu.Location = new System.Drawing.Point(579, 55);
+            this.pizzaMenu.Location = new System.Drawing.Point(600, 55);
             this.pizzaMenu.Name = "pizzaMenu";
             this.pizzaMenu.Scrollable = false;
             this.pizzaMenu.Size = new System.Drawing.Size(357, 414);
@@ -166,17 +170,61 @@ namespace PizzaApp
             // pizzaTotal
             // 
             this.pizzaTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pizzaTotal.Location = new System.Drawing.Point(13, 430);
+            this.pizzaTotal.Location = new System.Drawing.Point(12, 434);
             this.pizzaTotal.Name = "pizzaTotal";
             this.pizzaTotal.Size = new System.Drawing.Size(194, 39);
             this.pizzaTotal.TabIndex = 10;
             this.pizzaTotal.Text = "Total: ";
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(972, 24);
+            this.menuStrip1.TabIndex = 11;
+            this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
+            // 
+            // pizzaDough
+            // 
+            this.pizzaDough.DropDownHeight = 102;
+            this.pizzaDough.FormattingEnabled = true;
+            this.pizzaDough.IntegralHeight = false;
+            this.pizzaDough.ItemHeight = 13;
+            this.pizzaDough.Location = new System.Drawing.Point(401, 356);
+            this.pizzaDough.Name = "pizzaDough";
+            this.pizzaDough.Size = new System.Drawing.Size(190, 21);
+            this.pizzaDough.TabIndex = 18;
+            this.pizzaDough.Text = "Brød";
+            // 
+            // pizzaSauce
+            // 
+            this.pizzaSauce.FormattingEnabled = true;
+            this.pizzaSauce.Location = new System.Drawing.Point(401, 410);
+            this.pizzaSauce.Name = "pizzaSauce";
+            this.pizzaSauce.Size = new System.Drawing.Size(190, 21);
+            this.pizzaSauce.TabIndex = 19;
+            this.pizzaSauce.Text = "Sovs";
+            this.pizzaSauce.SelectedIndexChanged += new System.EventHandler(this.pizzaSauce_SelectedIndexChanged);
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.button1.Location = new System.Drawing.Point(213, 410);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(133, 48);
+            this.button1.TabIndex = 20;
+            this.button1.Text = "Tilføj";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // pizzaApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(945, 484);
+            this.ClientSize = new System.Drawing.Size(972, 484);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.pizzaSauce);
+            this.Controls.Add(this.pizzaDough);
             this.Controls.Add(this.pizzaTotal);
             this.Controls.Add(this.cartLabelName);
             this.Controls.Add(this.infoLabelName);
@@ -186,6 +234,8 @@ namespace PizzaApp
             this.Controls.Add(this.addPizzaButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pizzaTextBody);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "pizzaApp";
             this.Text = "Pizza App";
             this.Load += new System.EventHandler(this.pizzaApp_Load);
@@ -209,6 +259,10 @@ namespace PizzaApp
         private System.Windows.Forms.Label cartLabelName;
         private System.Windows.Forms.Label pizzaTotal;
         private System.Windows.Forms.ListView pizzaMenu;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ComboBox pizzaDough;
+        private System.Windows.Forms.ComboBox pizzaSauce;
+        private System.Windows.Forms.Button button1;
     }
 }
 
