@@ -5,8 +5,33 @@ using System.IO;
 
 namespace xmlLoader
 {
+    public class Size
+    {
+        [XmlAttribute(AttributeName = "price")]
+        public string price { get; set; }
+        [XmlAttribute(AttributeName = "sId")]
+        public string iId { get; set; }
+        [XmlAttribute(AttributeName = "name")]
+        public string name { get; set; }
+
+        private XMLLoader m_parent;
+        public void setParent(XMLLoader p_parent)
+        {
+            m_parent = p_parent;
+        }
+    }
+
+    [XmlRoot(ElementName = "sizes")]
+    public class Sizes
+    {
+        [XmlElement(ElementName = "size")]
+        public List<Size> Size { get; set; }
+    }
+
     public class Dough
     {
+        [XmlAttribute(AttributeName = "price")]
+        public string price { get; set; }
         [XmlAttribute(AttributeName = "dId")]
         public string iId { get; set; }
         [XmlAttribute(AttributeName = "name")]
@@ -28,6 +53,8 @@ namespace xmlLoader
 
     public class Ingredient
     {
+        [XmlAttribute(AttributeName = "price")]
+        public string price { get; set; }
         [XmlAttribute(AttributeName = "iId")]
         public string iId { get; set; }
         [XmlAttribute(AttributeName = "name")]
@@ -49,6 +76,8 @@ namespace xmlLoader
 
     public class Sauce
     {
+        [XmlAttribute(AttributeName = "price")]
+        public string price { get; set; }
         [XmlAttribute(AttributeName = "sId")]
         public string sId { get; set; }
         [XmlAttribute(AttributeName = "name")]
@@ -105,6 +134,8 @@ namespace xmlLoader
         public Ingredients Ingredients { get; set; }
         [XmlElement(ElementName = "doughs")]
         public Doughs Doughs { get; set; }
+        [XmlElement(ElementName = "sizes")]
+        public Sizes Sizes { get; set; }
 
         private static String m_path = "";
 
@@ -136,6 +167,8 @@ namespace xmlLoader
             foreach (Ingredient m_child in Ingredients.Ingredient)
                 m_child.setParent(this);
             foreach (Dough m_child in Doughs.Dough)
+                m_child.setParent(this);
+            foreach (Size m_child in Sizes.Size)
                 m_child.setParent(this);
         }
     }

@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <file xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <categories>
-    <category cid="1" name="Stor" />
-    <category cid="2" name="Mellem" />
-    <category cid="3" name="Lille" />
-  </categories>
+  <sizes>
+    <size sid="0" name="Stor" price="20"/>
+    <size sid="1" name="Mellem" price="10"/>
+    <size sid="2" name="Lille" price="0"/>
+  </sizes>
   <sauces>
-    <sauce sId="1" name="Tomat sovs"/>
-    <sauce sId="1" name="Chili sovs"/>
+    <sauce sId="0" name="Tomat sovs" price="10"/>
+    <sauce sId="1" name="Chili sovs" price="15"/>
   </sauces>
   <doughs>
-    <dough dId="1" name="Grov"/>
-    <dough dId="2" name="Hvidt"/>
+    <dough dId="0" name="Grov" price ="30"/>
+    <dough dId="1" name="Hvidt" price ="25"/>
   </doughs>
   <ingredients>
-    <ingredient iId="0" name="Skinke"/>
-    <ingredient iId="1" name="Ananas"/>
-    <ingredient iId="2" name="Ost"/>
+    <ingredient iId="0" name="Skinke" price ="10"/>
+    <ingredient iId="1" name="Ananas" price ="10"/>
+    <ingredient iId="2" name="Ost" price ="10"/>
   </ingredients>
   <pizzas>
     <pizza pId="0" name="Margherita" price="45kr" ingredients="0">
     </pizza>
-    <pizza pId="2" name="Skinke pizza" price="50kr" ingredients="0,1">
+    <pizza pId="1" name="Skinke pizza" price="49kr" ingredients="0,1">
     </pizza>
     <pizza pId="2" name="Hawaii" price="59kr" ingredients="0,1,2">
     </pizza>
