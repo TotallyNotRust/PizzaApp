@@ -14,8 +14,43 @@ namespace PizzaApp
     public partial class pizzaApp : Form
     {
         XMLLoader loader = XMLLoader.LoadXML("..\\..\\PizzaDatabase.xml");
+        public List<Pizza> pizzas = new List<Pizza>();
         public List<Ingredient> ingredients = new List<Ingredient>();
-        public List<Pizza> Pizzas = new List<Pizza>();
+        public List<Sauce> sauces = new List<Sauce>();
+        public List<Dough> doughs = new List<Dough>();
+        //public Cart cart = new classes.Cart();
+
+        public string returnValue { get; set; }
+
+
+        public void populateLists() // XMLLoader loader
+        {
+            foreach (Ingredient ing in loader.Ingredients.Ingredient)
+            {
+                ingredients.Add(ing);
+            }
+            foreach (Pizza m_product in loader.Pizzas.Pizza) // køere gennem alle produkter
+            {
+                ListViewItem Item = new ListViewItem(m_product.name); // Laver nyt listviewitem til produkt or giver den navnet på produktet
+
+                Item.SubItems.Add(ingredientList(m_product.ingredients, ingredients)); // Giver listviewitemet ingredienser
+                Item.SubItems.Add(getPizzaPrice(m_product)); // og pris
+                pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
+                pizzas.Add(m_product);
+            }
+
+            foreach (Dough Dough in loader.Doughs.Dough)
+            {
+                pizzaDough.Items.Add(Dough.name);
+            }
+            foreach (Sauce Sauce in loader.Sauces.Sauce)
+            {
+                pizzaSauce.Items.Add(Sauce.name);
+            }
+
+        }
+
+
         public pizzaApp()
         {
             InitializeComponent();
@@ -27,7 +62,7 @@ namespace PizzaApp
         {
             foreach (ListViewItem i in pizzaMenu.SelectedItems)
             {
-                Pizza pizza = Pizzas[pizzaMenu.Items.IndexOf(i)];
+                Pizza pizza = pizzas[pizzaMenu.Items.IndexOf(i)];
                 pizzaHeader.Text = i.Text;
                 pizzaTextBody.Text = pizza.ingredients;
                 item = i;
@@ -38,12 +73,12 @@ namespace PizzaApp
         {
 
         }
-
         private void pizzaApp_Load(object sender, EventArgs e)
         {
-            populateLists(loader);
+            populateLists();
+
         }
-        private string ingredientList(string needIngredients, List<Ingredient> allIngredients)
+        public string ingredientList(string needIngredients, List<Ingredient> allIngredients)
         {
             string str = "";
             string[] newIngredients = needIngredients.Split(',');
@@ -54,20 +89,33 @@ namespace PizzaApp
             return str;
         }
 
+        public string getPizzaPrice(Pizza pizza)
+        {
+            int price = 0;
+            foreach(string i in pizza.ingredients.Split(','))
+            {
+                if (i != "")
+                    price += Convert.ToInt32(ingredients[Convert.ToInt32(i)].price);
+            }
+            price += Convert.ToInt32(loader.Sauces.Sauce[Convert.ToInt32(pizza.sauce)].price);
+            price += Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price);
+
+            return Convert.ToString(price) + "kr";
+        }
+
         private void populateLists(XMLLoader loader) // XMLLoader loader
         {
             foreach(Ingredient ing in loader.Ingredients.Ingredient)
             {
                 ingredients.Add(ing);
             }
-            foreach (Pizza m_product in loader.Pizzas.Pizza) // køere gennem alle produkter
+            foreach (Pizza m_product in pizzas) // køere gennem alle produkter
             {
                 ListViewItem Item = new ListViewItem(m_product.name); // Laver nyt listviewitem til produkt or giver den navnet på produktet
 
                 Item.SubItems.Add(ingredientList(m_product.ingredients, ingredients)); // Giver listviewitemet ingredienser
-                Item.SubItems.Add(m_product.price); // og pris
+                Item.SubItems.Add(getPizzaPrice(m_product)); // og pris
                 pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
-                Pizzas.Add(m_product);
             }
 
             foreach(Dough Dough in loader.Doughs.Dough)
@@ -80,23 +128,45 @@ namespace PizzaApp
             }
 
         }
-        public class OrderItem
-        {
-            public string name; // Navn på pizza
-            public int price; // Pris på pizza
-            public List<Ingredient> ingredients; // Ingredienser i pizza
-            public void setValues(string Name, string Price, List<Ingredient> Ingredients) // Metode til at give values to name, price og ingredients køres efter objectet er initialiseret 
-            {
-                name = Name;
-                price = Convert.ToInt32(Price);
-                ingredients = Ingredients;
-            }
-        }
+
+        
 
         private void addPizzaButton_Click(object sender, EventArgs e)
         {
-            Extra extra = new Extra(ingredients, loader);
+            Extra extra = new Extra(ingredients, loader, this);
             extra.Show();
+        }
+    }
+
+}
+
+namespace classes
+{
+    class Cart
+    {
+        public List<Pizza> List = new List<Pizza>();
+        public ComboBox Chart;
+        public void init(ComboBox chart)
+        {
+            Chart = chart;
+        }
+
+        public string getPrice()
+        {
+            XMLLoader loader = XMLLoader.LoadXML("..\\..\\PizzaDatabase.xml");
+            int price = 0;
+            foreach (Pizza pizza in List)
+            {
+                foreach (string i in pizza.ingredients.Split(','))
+                {
+                    if (i != "")
+                        price += Convert.ToInt32(loader.Ingredients.Ingredient[Convert.ToInt32(i)].price);
+                }
+                price += Convert.ToInt32(loader.Sauces.Sauce[Convert.ToInt32(pizza.sauce)].price);
+                price += Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price);
+            }
+
+            return "" + price + "kr";
         }
     }
 }

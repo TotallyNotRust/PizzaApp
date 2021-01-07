@@ -33,7 +33,7 @@ namespace xmlLoader
         [XmlAttribute(AttributeName = "price")]
         public string price { get; set; }
         [XmlAttribute(AttributeName = "dId")]
-        public string iId { get; set; }
+        public string dId { get; set; }
         [XmlAttribute(AttributeName = "name")]
         public string name { get; set; }
 
@@ -99,8 +99,11 @@ namespace xmlLoader
 
     public class Pizza
     {
-        [XmlAttribute(AttributeName = "price")]
-        public string price { get; set; }
+        [XmlAttribute(AttributeName = "sauce")]
+        public string sauce { get; set; }
+        
+        [XmlAttribute(AttributeName = "dough")]
+        public string dough { get; set; }
 
         [XmlAttribute(AttributeName = "pId")]
         public string pId { get; set; }
@@ -108,6 +111,10 @@ namespace xmlLoader
         public string name { get; set; }
         [XmlAttribute(AttributeName = "ingredients")]
         public string ingredients { get; set; }
+
+        public int price = 0;
+
+        public string size;
 
         private XMLLoader m_parent;
         public void setParent(XMLLoader p_parent)

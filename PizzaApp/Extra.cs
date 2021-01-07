@@ -15,10 +15,13 @@ namespace PizzaApp
     {
         List<Ingredient> ingredients;
         XMLLoader loader;
-        public Extra(List<Ingredient> ing, XMLLoader Loader)
+        pizzaApp returnTo;
+
+        public Extra(List<Ingredient> ing, XMLLoader Loader, pizzaApp returnto)
         {
             ingredients = ing; // Sætter lokal liste over ingredienser til liste a ingredienser der bliver passet
             loader = Loader; // Sætter lokal variable med xml fil informationen til den der er blevet passet
+            returnTo = returnto; // bruges til at returne den nye pizza
            
             InitializeComponent();
 
@@ -50,7 +53,7 @@ namespace PizzaApp
         {
             toppingPrice = 0;
             List<string> list = new List<string>();
-            foreach (string i in toppingBox.CheckedItems) if (toppingBox.Items[index] != i) list.Add(i);
+            foreach (string i in toppingBox.CheckedItems) if (i != toppingBox.Items[index]) list.Add(i);
             try { if (!newVal) list.Add(Convert.ToString(toppingBox.Items[index])); }
             catch { }
             foreach (string i in list)
@@ -95,7 +98,49 @@ namespace PizzaApp
             setText();
         }
 
+        public string ingredientList(string needIngredients, List<Ingredient> allIngredients)
+        {
+            string str = "";
+            string[] newIngredients = needIngredients.Split(',');
+            foreach (string ingredient in newIngredients)
+            {
+                if (ingredient != "")
+                    str += allIngredients.ElementAt(Convert.ToInt32(ingredient)).name + ", ";
+            }
+            return str;
+        }
+
         private void customPizzaButon_Click(object sender, EventArgs e)
+        {
+            Pizza pizza = new Pizza();
+            pizza.name = "Lav selv pizza med ";
+            foreach(string i in toppingBox.CheckedItems) 
+            {
+                pizza.ingredients += toppingBox.Items.IndexOf(i) + ",";
+                pizza.name += i.Split('-')[0] + "og ";
+            }
+            pizza.name.Remove(pizza.name.Length - 3);
+            foreach (Sauce i in loader.Sauces.Sauce)
+                if (i.name == pizzaSauce.Text.Split('-')[0])
+                {
+                    pizza.sauce = i.sId; break;
+                }
+            foreach (Dough i in loader.Doughs.Dough)
+                if (i.name == pizzaDough.Text.Split('-')[0])
+                {
+                    pizza.dough = i.dId; break;
+                }
+
+                returnTo.pizzas.Add(pizza);
+                ListViewItem Item = new ListViewItem(pizza.name); // Laver nyt listviewitem til produkt or giver den navnet på produktet
+                Item.SubItems.Add(ingredientList(pizza.ingredients, ingredients)); // Giver listviewitemet ingredienser
+                Item.SubItems.Add(returnTo.getPizzaPrice(pizza)); // og pris
+                returnTo.pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
+
+                this.Close();
+        }
+
+        private void toppingBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

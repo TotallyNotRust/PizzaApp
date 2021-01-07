@@ -45,6 +45,7 @@ namespace PizzaApp
             this.toppingBox.Size = new System.Drawing.Size(140, 109);
             this.toppingBox.TabIndex = 0;
             this.toppingBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.toppingBox_ItemCheck);
+            this.toppingBox.SelectedIndexChanged += new System.EventHandler(this.toppingBox_SelectedIndexChanged);
             // 
             // pizzaDough
             // 

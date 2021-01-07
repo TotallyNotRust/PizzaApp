@@ -256,7 +256,7 @@ namespace PizzaApp
         private System.Windows.Forms.Label infoLabelName;
         private System.Windows.Forms.Label cartLabelName;
         private System.Windows.Forms.Label pizzaTotal;
-        private System.Windows.Forms.ListView pizzaMenu;
+        public System.Windows.Forms.ListView pizzaMenu;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Button addToOrderButton;
         private System.Windows.Forms.Button customPizzaButon;
