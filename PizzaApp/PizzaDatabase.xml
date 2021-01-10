@@ -5,6 +5,11 @@
     <size sid="1" name="Mellem" price="10"/>
     <size sid="2" name="Lille" price="0"/>
   </sizes>
+  <drinks>
+    <drink dId ="0" name="Sprite" price="30"/>
+    <drink dId ="1" name="Coca Cola" price="30"/>
+    <drink dId ="2" name="Vand" price="20"/>
+  </drinks>
   <sauces>
     <sauce sId="0" name="Tomat sovs" price="10"/>
     <sauce sId="1" name="Chili sovs" price="15"/>

@@ -114,35 +114,26 @@ namespace PizzaApp
         {
             Pizza pizza = new Pizza();
             pizza.name = "Lav selv pizza med ";
-            foreach(string i in toppingBox.CheckedItems) 
+            foreach (string i in toppingBox.CheckedItems)
             {
                 pizza.ingredients += toppingBox.Items.IndexOf(i) + ",";
                 pizza.name += i.Split('-')[0] + "og ";
             }
             pizza.name.Remove(pizza.name.Length - 3);
-            foreach (Sauce i in loader.Sauces.Sauce)
-                if (i.name == pizzaSauce.Text.Split('-')[0])
-                {
-                    pizza.sauce = i.sId; break;
-                }
-            foreach (Dough i in loader.Doughs.Dough)
-                if (i.name == pizzaDough.Text.Split('-')[0])
-                {
-                    pizza.dough = i.dId; break;
-                }
+            pizza.dough = loader.Doughs.Dough[pizzaDough.SelectedIndex].dId;
+            pizza.sauce = loader.Sauces.Sauce[pizzaSauce.SelectedIndex].sId;
+            pizza.size = Convert.ToInt32(loader.Sizes.Size[pizzaSize.SelectedIndex].sId);
 
-                returnTo.pizzas.Add(pizza);
-                ListViewItem Item = new ListViewItem(pizza.name); // Laver nyt listviewitem til produkt or giver den navnet på produktet
-                Item.SubItems.Add(ingredientList(pizza.ingredients, ingredients)); // Giver listviewitemet ingredienser
-                Item.SubItems.Add(returnTo.getPizzaPrice(pizza)); // og pris
-                returnTo.pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
-
-                this.Close();
-        }
-
-        private void toppingBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
+            returnTo.pizzas.Add(pizza);
+            ListViewItem Item = new ListViewItem(pizza.name); // Laver nyt listviewitem til produkt or giver den navnet på produktet
+            Item.SubItems.Add(ingredientList(pizza.ingredients, ingredients)); // Giver listviewitemet ingredienser
+            Item.SubItems.Add(returnTo.getPizzaPrice(pizza)); // og pris
+            returnTo.pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
+            Item = new ListViewItem(pizza.name); // Laver nyt listviewitem til produkt or giver den navnet på produktet
+            Item.SubItems.Add(returnTo.getPizzaPrice(pizza)); // og pris
+            returnTo.pizzaCart.Items.Add(Item);
+            returnTo.cart.pizzaList = pizza;
+            this.Close();
         }
     }
 }

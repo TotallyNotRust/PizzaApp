@@ -18,12 +18,11 @@ namespace PizzaApp
         public List<Ingredient> ingredients = new List<Ingredient>();
         public List<Sauce> sauces = new List<Sauce>();
         public List<Dough> doughs = new List<Dough>();
-        //public Cart cart = new classes.Cart();
+        public Cart cart = new Cart();
 
         public string returnValue { get; set; }
 
-
-        public void populateLists() // XMLLoader loader
+        public void populateLists()
         {
             foreach (Ingredient ing in loader.Ingredients.Ingredient)
             {
@@ -47,42 +46,36 @@ namespace PizzaApp
             {
                 pizzaSauce.Items.Add(Sauce.name);
             }
+            foreach (xmlLoader.Size Size in loader.Sizes.Size)
+            {
+                pizzaSize.Items.Add(Size.name);
+                drinkSize.Items.Add(Size.name);
+            }
+            foreach (Drink Drink in loader.Drinks.Drink)
+            {
+                ListViewItem Item = new ListViewItem(Drink.name);
+                Item.SubItems.Add(Drink.price + "kr");
+                drinksMenu.Items.Add(Item);
+            }
 
         }
-
 
         public pizzaApp()
         {
             InitializeComponent();
+            cart.init(this);
         }
 
-        public ListViewItem item;
-
-        private void pizzaMenu_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            foreach (ListViewItem i in pizzaMenu.SelectedItems)
-            {
-                Pizza pizza = pizzas[pizzaMenu.Items.IndexOf(i)];
-                pizzaHeader.Text = i.Text;
-                pizzaTextBody.Text = pizza.ingredients;
-                item = i;
-            }
-        }
-
-        private void pizzaCart_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
         private void pizzaApp_Load(object sender, EventArgs e)
         {
             populateLists();
-
         }
+
         public string ingredientList(string needIngredients, List<Ingredient> allIngredients)
         {
             string str = "";
             string[] newIngredients = needIngredients.Split(',');
-            foreach(string ingredient in newIngredients)
+            foreach (string ingredient in newIngredients)
             {
                 str = str + allIngredients.ElementAt(Convert.ToInt32(ingredient)).name + ", ";
             }
@@ -92,7 +85,7 @@ namespace PizzaApp
         public string getPizzaPrice(Pizza pizza)
         {
             int price = 0;
-            foreach(string i in pizza.ingredients.Split(','))
+            foreach (string i in pizza.ingredients.Split(','))
             {
                 if (i != "")
                     price += Convert.ToInt32(ingredients[Convert.ToInt32(i)].price);
@@ -103,9 +96,23 @@ namespace PizzaApp
             return Convert.ToString(price) + "kr";
         }
 
+        private void pizzaMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                pizzaDough.SelectedIndex = Convert.ToInt32(pizzas[pizzaMenu.SelectedIndices[0]].dough);
+                pizzaSauce.SelectedIndex = Convert.ToInt32(pizzas[pizzaMenu.SelectedIndices[0]].sauce);
+                if (Convert.ToInt32(pizzas[pizzaMenu.SelectedIndices[0]].size) >= 0)
+                    pizzaSize.SelectedIndex = Convert.ToInt32(pizzas[pizzaMenu.SelectedIndices[0]].size);
+                else
+                    pizzaSize.SelectedIndex = 2;
+            }
+            catch { }
+        }
+
         private void populateLists(XMLLoader loader) // XMLLoader loader
         {
-            foreach(Ingredient ing in loader.Ingredients.Ingredient)
+            foreach (Ingredient ing in loader.Ingredients.Ingredient)
             {
                 ingredients.Add(ing);
             }
@@ -118,7 +125,7 @@ namespace PizzaApp
                 pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
             }
 
-            foreach(Dough Dough in loader.Doughs.Dough)
+            foreach (Dough Dough in loader.Doughs.Dough)
             {
                 pizzaDough.Items.Add(Dough.name);
             }
@@ -129,44 +136,80 @@ namespace PizzaApp
 
         }
 
-        
-
         private void addPizzaButton_Click(object sender, EventArgs e)
         {
             Extra extra = new Extra(ingredients, loader, this);
             extra.Show();
         }
-    }
 
-}
-
-namespace classes
-{
-    class Cart
-    {
-        public List<Pizza> List = new List<Pizza>();
-        public ComboBox Chart;
-        public void init(ComboBox chart)
+        private void addDrink_Click(object sender, EventArgs e)
         {
-            Chart = chart;
+            if (drinkSize.SelectedIndex >= 0)
+            {
+                Drink Drink = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]];
+                Drink.price = Convert.ToString(Convert.ToInt32(Drink.price) + Convert.ToInt32(loader.Sizes.Size[drinkSize.SelectedIndex].price));
+                ListViewItem Item = new ListViewItem(Drink.name);
+                Item.SubItems.Add(Drink.price + "kr");
+                pizzaCart.Items.Add(Item);
+
+                cart.drinkList = Drink;
+            }
+            else MessageBox.Show("Vælg venligst en størrelse");
         }
 
-        public string getPrice()
+        private void addPrizza_Click(object sender, EventArgs e)
         {
-            XMLLoader loader = XMLLoader.LoadXML("..\\..\\PizzaDatabase.xml");
-            int price = 0;
-            foreach (Pizza pizza in List)
+            if (pizzaSize.SelectedIndex >= 0)
             {
-                foreach (string i in pizza.ingredients.Split(','))
-                {
-                    if (i != "")
-                        price += Convert.ToInt32(loader.Ingredients.Ingredient[Convert.ToInt32(i)].price);
-                }
-                price += Convert.ToInt32(loader.Sauces.Sauce[Convert.ToInt32(pizza.sauce)].price);
-                price += Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price);
+                Pizza Pizza = loader.Pizzas.Pizza[pizzaMenu.SelectedIndices[0]];
+                Pizza.price = Convert.ToInt32(getPizzaPrice(Pizza).Split('k')[0]);
+                ListViewItem Item = new ListViewItem(Pizza.name);
+                Item.SubItems.Add(Pizza.price + "kr");
+                pizzaCart.Items.Add(Item);
+
+                cart.pizzaList = Pizza;
+            }
+            else MessageBox.Show("Vælg venligst en størrelse");
+        }
+
+        public class Cart
+        {
+            private pizzaApp app;
+            public List<Pizza> PizzaList = new List<Pizza>();
+            public Pizza pizzaList { get { return null; } set { PizzaList.Add(value); getPrice(); } }
+            public List<Drink> DrinkList = new List<Drink>();
+            public Drink drinkList { get { return null; } set { DrinkList.Add(value); getPrice(); } }
+            public XMLLoader loader = XMLLoader.LoadXML("..\\..\\PizzaDatabase.xml");
+            public void init(pizzaApp App)
+            {
+                app = App;
             }
 
-            return "" + price + "kr";
+            public string getPrice()
+            {
+                int price = 0;
+                foreach (Pizza pizza in PizzaList)
+                {
+                    foreach (string i in pizza.ingredients.Split(','))
+                    {
+                        if (i != "")
+                            price += Convert.ToInt32(loader.Ingredients.Ingredient[Convert.ToInt32(i)].price);
+                    }
+                    price += Convert.ToInt32(loader.Sauces.Sauce[Convert.ToInt32(pizza.sauce)].price);
+                    price += Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price);
+
+                    app.pizzaTotal.Text = "Total: " + price;
+                }
+
+                foreach (Drink drink in DrinkList)
+                {
+                    price += Convert.ToInt32(drink.price);
+
+                    app.pizzaTotal.Text = "Total: " + price;
+                }
+
+                return "" + price + "kr";
+            }
         }
     }
 }
