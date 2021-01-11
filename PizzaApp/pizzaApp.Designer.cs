@@ -52,6 +52,8 @@ namespace PizzaApp
             this.label1 = new System.Windows.Forms.Label();
             this.pizzaLabel = new System.Windows.Forms.Label();
             this.drinksLabel = new System.Windows.Forms.Label();
+            this.removeFromCart = new System.Windows.Forms.Button();
+            this.isDrink = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // pizzaMenu
@@ -66,6 +68,7 @@ namespace PizzaApp
             this.pizzaMenu.Location = new System.Drawing.Point(216, 69);
             this.pizzaMenu.Name = "pizzaMenu";
             this.pizzaMenu.Scrollable = false;
+            this.pizzaMenu.ShowItemToolTips = true;
             this.pizzaMenu.Size = new System.Drawing.Size(357, 281);
             this.pizzaMenu.TabIndex = 5;
             this.pizzaMenu.UseCompatibleStateImageBehavior = false;
@@ -90,7 +93,8 @@ namespace PizzaApp
             // 
             this.pizzaCart.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.name,
-            this.price});
+            this.price,
+            this.isDrink});
             this.pizzaCart.FullRowSelect = true;
             this.pizzaCart.GridLines = true;
             this.pizzaCart.HideSelection = false;
@@ -124,7 +128,7 @@ namespace PizzaApp
             // pizzaTotal
             // 
             this.pizzaTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pizzaTotal.Location = new System.Drawing.Point(12, 360);
+            this.pizzaTotal.Location = new System.Drawing.Point(7, 413);
             this.pizzaTotal.Name = "pizzaTotal";
             this.pizzaTotal.Size = new System.Drawing.Size(194, 39);
             this.pizzaTotal.TabIndex = 10;
@@ -265,11 +269,27 @@ namespace PizzaApp
             this.drinksLabel.TabIndex = 28;
             this.drinksLabel.Text = "Drikkevarer";
             // 
+            // removeFromCart
+            // 
+            this.removeFromCart.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.removeFromCart.Location = new System.Drawing.Point(12, 356);
+            this.removeFromCart.Name = "removeFromCart";
+            this.removeFromCart.Size = new System.Drawing.Size(195, 48);
+            this.removeFromCart.TabIndex = 29;
+            this.removeFromCart.Text = "Fjern fra vogn";
+            this.removeFromCart.UseVisualStyleBackColor = true;
+            this.removeFromCart.Click += new System.EventHandler(this.removeFromCart_Click);
+            // 
+            // isDrink
+            // 
+            this.isDrink.Width = 0;
+            // 
             // pizzaApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(803, 484);
+            this.Controls.Add(this.removeFromCart);
             this.Controls.Add(this.drinksLabel);
             this.Controls.Add(this.pizzaLabel);
             this.Controls.Add(this.label1);
@@ -319,6 +339,8 @@ namespace PizzaApp
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label pizzaLabel;
         private System.Windows.Forms.Label drinksLabel;
+        private System.Windows.Forms.Button removeFromCart;
+        private System.Windows.Forms.ColumnHeader isDrink;
     }
 }
 

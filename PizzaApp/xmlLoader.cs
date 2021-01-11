@@ -5,6 +5,29 @@ using System.IO;
 
 namespace xmlLoader
 {
+    public class Spice
+    {
+        [XmlAttribute(AttributeName = "sId")]
+        public string sId { get; set; }
+        [XmlAttribute(AttributeName = "name")]
+        public string name { get; set; }
+        [XmlAttribute(AttributeName = "price")]
+        public string price { get; set; }
+
+        private XMLLoader m_parent;
+        public void setParent(XMLLoader p_parent)
+        {
+            m_parent = p_parent;
+        }
+    }
+
+    [XmlRoot(ElementName = "spices")]
+    public class Spices
+    {
+        [XmlElement(ElementName = "spice")]
+        public List<Spice> Spice { get; set; }
+    }
+
     public class Drink
     {
         [XmlAttribute(AttributeName = "dId")]
@@ -167,6 +190,8 @@ namespace xmlLoader
         public Sizes Sizes { get; set; }
         [XmlElement(ElementName = "drinks")]
         public Drinks Drinks { get; set; }
+        [XmlElement(ElementName = "spices")]
+        public Spices Spices { get; set; }
 
         private static String m_path = "";
 
@@ -202,6 +227,8 @@ namespace xmlLoader
             foreach (Size m_child in Sizes.Size)
                 m_child.setParent(this);
             foreach (Drink m_child in Drinks.Drink)
+                m_child.setParent(this);
+            foreach (Spice m_child in Spices.Spice)
                 m_child.setParent(this);
         }
     }

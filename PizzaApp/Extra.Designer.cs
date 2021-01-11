@@ -35,12 +35,13 @@ namespace PizzaApp
             this.pizzaTotal = new System.Windows.Forms.Label();
             this.pizzaSize = new System.Windows.Forms.ComboBox();
             this.customPizzaButon = new System.Windows.Forms.Button();
+            this.spiceBox = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // toppingBox
             // 
             this.toppingBox.FormattingEnabled = true;
-            this.toppingBox.Location = new System.Drawing.Point(12, 87);
+            this.toppingBox.Location = new System.Drawing.Point(12, 30);
             this.toppingBox.Name = "toppingBox";
             this.toppingBox.Size = new System.Drawing.Size(140, 109);
             this.toppingBox.TabIndex = 0;
@@ -62,7 +63,7 @@ namespace PizzaApp
             // pizzaSauce
             // 
             this.pizzaSauce.FormattingEnabled = true;
-            this.pizzaSauce.Location = new System.Drawing.Point(163, 99);
+            this.pizzaSauce.Location = new System.Drawing.Point(163, 122);
             this.pizzaSauce.Name = "pizzaSauce";
             this.pizzaSauce.Size = new System.Drawing.Size(133, 21);
             this.pizzaSauce.TabIndex = 20;
@@ -81,7 +82,7 @@ namespace PizzaApp
             // pizzaSize
             // 
             this.pizzaSize.FormattingEnabled = true;
-            this.pizzaSize.Location = new System.Drawing.Point(163, 126);
+            this.pizzaSize.Location = new System.Drawing.Point(163, 172);
             this.pizzaSize.Name = "pizzaSize";
             this.pizzaSize.Size = new System.Drawing.Size(133, 21);
             this.pizzaSize.TabIndex = 22;
@@ -91,7 +92,7 @@ namespace PizzaApp
             // customPizzaButon
             // 
             this.customPizzaButon.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.customPizzaButon.Location = new System.Drawing.Point(163, 153);
+            this.customPizzaButon.Location = new System.Drawing.Point(163, 211);
             this.customPizzaButon.Name = "customPizzaButon";
             this.customPizzaButon.Size = new System.Drawing.Size(133, 43);
             this.customPizzaButon.TabIndex = 23;
@@ -99,11 +100,20 @@ namespace PizzaApp
             this.customPizzaButon.UseVisualStyleBackColor = true;
             this.customPizzaButon.Click += new System.EventHandler(this.customPizzaButon_Click);
             // 
+            // spiceBox
+            // 
+            this.spiceBox.FormattingEnabled = true;
+            this.spiceBox.Location = new System.Drawing.Point(12, 145);
+            this.spiceBox.Name = "spiceBox";
+            this.spiceBox.Size = new System.Drawing.Size(140, 109);
+            this.spiceBox.TabIndex = 24;
+            // 
             // Extra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(317, 207);
+            this.ClientSize = new System.Drawing.Size(306, 268);
+            this.Controls.Add(this.spiceBox);
             this.Controls.Add(this.customPizzaButon);
             this.Controls.Add(this.pizzaSize);
             this.Controls.Add(this.pizzaTotal);
@@ -111,7 +121,7 @@ namespace PizzaApp
             this.Controls.Add(this.pizzaDough);
             this.Controls.Add(this.toppingBox);
             this.Name = "Extra";
-            this.Text = "Lav selv pizza";
+            this.Text = " ";
             this.ResumeLayout(false);
 
         }
@@ -124,5 +134,6 @@ namespace PizzaApp
         private System.Windows.Forms.Label pizzaTotal;
         private System.Windows.Forms.ComboBox pizzaSize;
         private System.Windows.Forms.Button customPizzaButon;
+        private System.Windows.Forms.CheckedListBox spiceBox;
     }
 }

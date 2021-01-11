@@ -46,6 +46,10 @@ namespace PizzaApp
             {
                 pizzaSize.Items.Add(Size.name + " - " + Size.price + "kr");
             }
+            foreach (Spice Spice in loader.Spices.Spice)
+            {
+                spiceBox.Items.Add(Spice.name + " - " + Spice.price + "kr");
+            }
         }
 
         public int toppingPrice = 0;
@@ -54,8 +58,7 @@ namespace PizzaApp
             toppingPrice = 0;
             List<string> list = new List<string>();
             foreach (string i in toppingBox.CheckedItems) if (i != toppingBox.Items[index]) list.Add(i);
-            try { if (!newVal) list.Add(Convert.ToString(toppingBox.Items[index])); }
-            catch { }
+            if (!newVal) list.Add(Convert.ToString(toppingBox.Items[index])); 
             foreach (string i in list)
             {
                 toppingPrice += Convert.ToInt32(i.Split('-')[1].Remove(i.Split('-')[1].Length - 2));

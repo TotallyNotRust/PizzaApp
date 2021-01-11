@@ -40,16 +40,16 @@ namespace PizzaApp
 
             foreach (Dough Dough in loader.Doughs.Dough)
             {
-                pizzaDough.Items.Add(Dough.name);
+                pizzaDough.Items.Add(Dough.name + " - " + Dough.price + "");
             }
             foreach (Sauce Sauce in loader.Sauces.Sauce)
             {
-                pizzaSauce.Items.Add(Sauce.name);
+                pizzaSauce.Items.Add(Sauce.name + " - " + Sauce.price + "kr");
             }
             foreach (xmlLoader.Size Size in loader.Sizes.Size)
             {
-                pizzaSize.Items.Add(Size.name);
-                drinkSize.Items.Add(Size.name);
+                pizzaSize.Items.Add(Size.name + " - " + Size.price + "kr");
+                drinkSize.Items.Add(Size.name + " - " + Size.price + "kr");
             }
             foreach (Drink Drink in loader.Drinks.Drink)
             {
@@ -97,7 +97,7 @@ namespace PizzaApp
         }
 
         private void pizzaMenu_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        {      // Skal ændres til ItemCheck
             try
             {
                 pizzaDough.SelectedIndex = Convert.ToInt32(pizzas[pizzaMenu.SelectedIndices[0]].dough);
@@ -150,6 +150,7 @@ namespace PizzaApp
                 Drink.price = Convert.ToString(Convert.ToInt32(Drink.price) + Convert.ToInt32(loader.Sizes.Size[drinkSize.SelectedIndex].price));
                 ListViewItem Item = new ListViewItem(Drink.name);
                 Item.SubItems.Add(Drink.price + "kr");
+                Item.SubItems.Add("true");
                 pizzaCart.Items.Add(Item);
 
                 cart.drinkList = Drink;
@@ -159,17 +160,31 @@ namespace PizzaApp
 
         private void addPrizza_Click(object sender, EventArgs e)
         {
-            if (pizzaSize.SelectedIndex >= 0)
+            if (pizzaMenu.SelectedIndices.Count >= 1)
             {
-                Pizza Pizza = loader.Pizzas.Pizza[pizzaMenu.SelectedIndices[0]];
-                Pizza.price = Convert.ToInt32(getPizzaPrice(Pizza).Split('k')[0]);
-                ListViewItem Item = new ListViewItem(Pizza.name);
-                Item.SubItems.Add(Pizza.price + "kr");
-                pizzaCart.Items.Add(Item);
+                if (pizzaSize.SelectedIndex >= 0)
+                {
+                    Pizza Pizza = loader.Pizzas.Pizza[pizzaMenu.SelectedIndices[0]];
+                    Pizza.price = Convert.ToInt32(getPizzaPrice(Pizza).Split('k')[0]);
+                    ListViewItem Item = new ListViewItem(Pizza.name);
+                    Item.SubItems.Add(Pizza.price + "kr");
+                    Item.SubItems.Add("false");
+                    pizzaCart.Items.Add(Item);
 
-                cart.pizzaList = Pizza;
+                    cart.pizzaList = Pizza;
+
+                }
+                else MessageBox.Show("Vælg venligst en størrelse");
             }
-            else MessageBox.Show("Vælg venligst en størrelse");
+            else MessageBox.Show("Vælg venligst en pizza");
+
+        }
+
+        private void removeFromCart_Click(object sender, EventArgs e)
+        {
+            cart.PizzaList.RemoveAt(pizzaCart.SelectedIndices[0]);
+            pizzaCart.Items.RemoveAt(pizzaCart.SelectedIndices[0]);
+            cart.getPrice();
         }
 
         public class Cart

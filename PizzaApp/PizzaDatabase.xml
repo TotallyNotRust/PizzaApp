@@ -5,6 +5,11 @@
     <size sid="1" name="Mellem" price="10"/>
     <size sid="2" name="Lille" price="0"/>
   </sizes>
+  <spices>
+    <spice sId ="0" name="Oregano" price ="5"/>
+    <spice sId ="0" name="Chili Stærk" price ="5"/>
+    <spice sId ="0" name="Chili Mild" price ="5"/>
+  </spices>
   <drinks>
     <drink dId ="0" name="Sprite" price="30"/>
     <drink dId ="1" name="Coca Cola" price="30"/>
@@ -22,10 +27,16 @@
     <ingredient iId="0" name="Skinke" price ="10"/>
     <ingredient iId="1" name="Ananas" price ="10"/>
     <ingredient iId="2" name="Ost" price ="10"/>
+    <ingredient iId="3" name="Bacon" price ="5"/>
+    <ingredient iId="4" name="Pickles" price ="5"/>
+    <ingredient iId="5" name="Rejer" price ="10"/>
+    <ingredient iId="6" name="Oksekød" price ="10"/>
+    <ingredient iId="7" name="Iceberg salat" price ="15"/>
   </ingredients>
   <pizzas>
     <pizza pId="0" name="Margherita" ingredients="0" sauce="0" dough="1"/>
     <pizza pId="1" name="Skinke pizza" ingredients="0,1" sauce="0" dough="1"/>
     <pizza pId="2" name="Hawaii" ingredients="0,1,2" sauce="0" dough="1"/>
+    <pizza pId="3" name="Meat feast" ingredients="0,1,2,3,6" sauce="0" dough="1"/>
   </pizzas>
 </file>
