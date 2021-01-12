@@ -45,7 +45,7 @@ namespace PizzaApp
             this.toppingBox.Name = "toppingBox";
             this.toppingBox.Size = new System.Drawing.Size(140, 109);
             this.toppingBox.TabIndex = 0;
-            this.toppingBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.toppingBox_ItemCheck);
+            this.toppingBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.updatePrice);
             // 
             // pizzaDough
             // 
@@ -58,7 +58,7 @@ namespace PizzaApp
             this.pizzaDough.Size = new System.Drawing.Size(133, 21);
             this.pizzaDough.TabIndex = 19;
             this.pizzaDough.Text = "Brød";
-            this.pizzaDough.SelectedIndexChanged += new System.EventHandler(this.pizzaDough_SelectedIndexChanged);
+            this.pizzaDough.SelectedIndexChanged += new System.EventHandler(this.updatePrice);
             // 
             // pizzaSauce
             // 
@@ -68,14 +68,14 @@ namespace PizzaApp
             this.pizzaSauce.Size = new System.Drawing.Size(133, 21);
             this.pizzaSauce.TabIndex = 20;
             this.pizzaSauce.Text = "Sovs";
-            this.pizzaSauce.SelectedIndexChanged += new System.EventHandler(this.pizzaSauce_SelectedIndexChanged);
+            this.pizzaSauce.SelectedIndexChanged += new System.EventHandler(this.updatePrice);
             // 
             // pizzaTotal
             // 
             this.pizzaTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pizzaTotal.Location = new System.Drawing.Point(158, 30);
             this.pizzaTotal.Name = "pizzaTotal";
-            this.pizzaTotal.Size = new System.Drawing.Size(194, 39);
+            this.pizzaTotal.Size = new System.Drawing.Size(138, 39);
             this.pizzaTotal.TabIndex = 21;
             this.pizzaTotal.Text = "Total: ";
             // 
@@ -87,7 +87,7 @@ namespace PizzaApp
             this.pizzaSize.Size = new System.Drawing.Size(133, 21);
             this.pizzaSize.TabIndex = 22;
             this.pizzaSize.Text = "Størrelse";
-            this.pizzaSize.SelectedIndexChanged += new System.EventHandler(this.pizzaSize_SelectedIndexChanged);
+            this.pizzaSize.SelectedIndexChanged += new System.EventHandler(this.updatePrice);
             // 
             // customPizzaButon
             // 
@@ -107,6 +107,7 @@ namespace PizzaApp
             this.spiceBox.Name = "spiceBox";
             this.spiceBox.Size = new System.Drawing.Size(140, 109);
             this.spiceBox.TabIndex = 24;
+            this.spiceBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.updatePrice);
             // 
             // Extra
             // 

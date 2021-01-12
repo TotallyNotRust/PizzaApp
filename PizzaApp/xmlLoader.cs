@@ -156,10 +156,12 @@ namespace xmlLoader
         public string name { get; set; }
         [XmlAttribute(AttributeName = "ingredients")]
         public string ingredients { get; set; }
+        [XmlAttribute(AttributeName = "spices")]
+        public string spices { get; set; }
 
         public int price = 0;
 
-        public int size = -1;
+        public int size;
 
         private XMLLoader m_parent;
         public void setParent(XMLLoader p_parent)

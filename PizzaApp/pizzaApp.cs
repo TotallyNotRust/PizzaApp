@@ -85,13 +85,22 @@ namespace PizzaApp
         public string getPizzaPrice(Pizza pizza)
         {
             int price = 0;
-            foreach (string i in pizza.ingredients.Split(','))
-            {
-                if (i != "")
-                    price += Convert.ToInt32(ingredients[Convert.ToInt32(i)].price);
-            }
-            price += Convert.ToInt32(loader.Sauces.Sauce[Convert.ToInt32(pizza.sauce)].price);
-            price += Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price);
+            if (pizza.ingredients != null)
+                foreach (string i in pizza.ingredients.Split(','))
+                {
+                    if (i != "")
+                        price += Convert.ToInt32(ingredients[Convert.ToInt32(i)].price);
+                }
+            if (pizza.spices != null)
+                foreach (string i in pizza.spices.Split(','))
+                {
+                    if (i != "")
+                        price += Convert.ToInt32(loader.Spices.Spice[Convert.ToInt32(i)].price);
+                }
+            if (pizza.dough != null)
+                price += Convert.ToInt32(loader.Sauces.Sauce[Convert.ToInt32(pizza.sauce)].price);
+            if (pizza.dough != null)
+                price += Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price);
 
             return Convert.ToString(price) + "kr";
         }
@@ -205,24 +214,14 @@ namespace PizzaApp
                 int price = 0;
                 foreach (Pizza pizza in PizzaList)
                 {
-                    foreach (string i in pizza.ingredients.Split(','))
-                    {
-                        if (i != "")
-                            price += Convert.ToInt32(loader.Ingredients.Ingredient[Convert.ToInt32(i)].price);
-                    }
-                    price += Convert.ToInt32(loader.Sauces.Sauce[Convert.ToInt32(pizza.sauce)].price);
-                    price += Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price);
-
-                    app.pizzaTotal.Text = "Total: " + price;
+                    price += Convert.ToInt32(app.getPizzaPrice(pizza).Split('k')[0]);
                 }
 
                 foreach (Drink drink in DrinkList)
                 {
                     price += Convert.ToInt32(drink.price);
-
-                    app.pizzaTotal.Text = "Total: " + price;
                 }
-
+                app.pizzaTotal.Text = "Total: " + price + "kr";
                 return "" + price + "kr";
             }
         }

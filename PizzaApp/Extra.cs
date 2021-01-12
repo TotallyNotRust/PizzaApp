@@ -22,7 +22,7 @@ namespace PizzaApp
             ingredients = ing; // Sætter lokal liste over ingredienser til liste a ingredienser der bliver passet
             loader = Loader; // Sætter lokal variable med xml fil informationen til den der er blevet passet
             returnTo = returnto; // bruges til at returne den nye pizza
-           
+
             InitializeComponent();
 
             populateLists();
@@ -42,7 +42,7 @@ namespace PizzaApp
             {
                 pizzaSauce.Items.Add(Sauce.name + " - " + Sauce.price + "kr"); // Putter sovsen på listen over sovse
             }
-            foreach (Size Size in loader.Sizes.Size) 
+            foreach (Size Size in loader.Sizes.Size)
             {
                 pizzaSize.Items.Add(Size.name + " - " + Size.price + "kr");
             }
@@ -50,55 +50,6 @@ namespace PizzaApp
             {
                 spiceBox.Items.Add(Spice.name + " - " + Spice.price + "kr");
             }
-        }
-
-        public int toppingPrice = 0;
-        public void calculatePriceBox(int index, bool newVal)
-        {
-            toppingPrice = 0;
-            List<string> list = new List<string>();
-            foreach (string i in toppingBox.CheckedItems) if (i != toppingBox.Items[index]) list.Add(i);
-            if (!newVal) list.Add(Convert.ToString(toppingBox.Items[index])); 
-            foreach (string i in list)
-            {
-                toppingPrice += Convert.ToInt32(i.Split('-')[1].Remove(i.Split('-')[1].Length - 2));
-            }
-
-            setText();
-        }
-
-        public void setText()
-        {
-            pizzaTotal.Text = "Total: " + Convert.ToString(toppingPrice + doughPrice + saucePrice + sizePrice);
-        }
-
-        public int saucePrice = 0;
-        private void pizzaSauce_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string i = pizzaSauce.Text;
-            saucePrice = Convert.ToInt32(i.Split('-')[1].Remove(i.Split('-')[1].Length - 2));
-            setText();
-        }
-
-        public int doughPrice = 0;
-        private void pizzaDough_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string i = pizzaDough.Text;
-            doughPrice = Convert.ToInt32(i.Split('-')[1].Remove(i.Split('-')[1].Length - 2));
-            setText();
-        }
-
-        private void toppingBox_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            calculatePriceBox(e.Index, e.NewValue == System.Windows.Forms.CheckState.Unchecked);
-        }
-
-        public int sizePrice = 0;
-        private void pizzaSize_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string i = pizzaSize.Text;
-            sizePrice = Convert.ToInt32(i.Split('-')[1].Remove(i.Split('-')[1].Length - 2));
-            setText();
         }
 
         public string ingredientList(string needIngredients, List<Ingredient> allIngredients)
@@ -122,7 +73,12 @@ namespace PizzaApp
                 pizza.ingredients += toppingBox.Items.IndexOf(i) + ",";
                 pizza.name += i.Split('-')[0] + "og ";
             }
-            pizza.name.Remove(pizza.name.Length - 3);
+            pizza.spices = "";
+            foreach (string i in spiceBox.CheckedItems)
+            {
+                pizza.spices += spiceBox.Items.IndexOf(i) + ",";
+            }
+            pizza.name.Substring(0, pizza.name.Length - 3);
             pizza.dough = loader.Doughs.Dough[pizzaDough.SelectedIndex].dId;
             pizza.sauce = loader.Sauces.Sauce[pizzaSauce.SelectedIndex].sId;
             pizza.size = Convert.ToInt32(loader.Sizes.Size[pizzaSize.SelectedIndex].sId);
@@ -138,5 +94,42 @@ namespace PizzaApp
             returnTo.cart.pizzaList = pizza;
             this.Close();
         }
+        #region opdater label med pris
+        private void updatePrice(object sender, ItemCheckEventArgs e, ComboBox self)
+        {
+            if (e.NewValue == System.Windows.Forms.CheckState.Checked)
+                updatePrice();
+        }
+        private void updatePrice(object sender, EventArgs e)
+        {
+            EventArgs x = e;
+            updatePrice();
+        }
+
+        private void updatePrice()
+        {
+            
+            Pizza pizza = new Pizza();
+            pizza.name = "Lav selv pizza med ";
+            foreach (string i in toppingBox.CheckedItems)
+            {
+                pizza.ingredients += toppingBox.Items.IndexOf(i) + ",";
+            }
+            pizza.spices = "";
+            foreach (string i in spiceBox.CheckedItems)
+            {
+                pizza.spices += spiceBox.Items.IndexOf(i) + ",";
+            }
+            if (pizzaDough.SelectedIndex != -1)
+                pizza.dough = loader.Doughs.Dough[pizzaDough.SelectedIndex].dId;
+            if (pizzaSauce.SelectedIndex != -1)
+                pizza.sauce = loader.Sauces.Sauce[pizzaSauce.SelectedIndex].sId;
+            if (pizzaSize.SelectedIndex != -1)
+                pizza.size = Convert.ToInt32(loader.Sizes.Size[pizzaSize.SelectedIndex].sId);
+
+            pizzaTotal.Text = "Total: " + returnTo.getPizzaPrice(pizza);
+        }
+        #endregion
+
     }
 }
