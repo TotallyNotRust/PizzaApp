@@ -81,8 +81,12 @@ namespace PizzaApp
             }
             return str;
         }
-
         public string getPizzaPrice(Pizza pizza)
+        {
+            return getPizzaPrice(pizza, 0);
+        }
+
+        public string getPizzaPrice(Pizza pizza, int extra)
         {
             int price = 0;
             if (pizza.ingredients != null)
@@ -97,17 +101,19 @@ namespace PizzaApp
                     if (i != "")
                         price += Convert.ToInt32(loader.Spices.Spice[Convert.ToInt32(i)].price);
                 }
-            if (pizza.dough != null)
+            if (pizza.sauce != null)
                 price += Convert.ToInt32(loader.Sauces.Sauce[Convert.ToInt32(pizza.sauce)].price);
             if (pizza.dough != null)
                 price += Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price);
+            if (pizza.size != -1)
+                price += Convert.ToInt32(loader.Sizes.Size[Convert.ToInt32(pizza.size)].price);
 
-            return Convert.ToString(price) + "kr";
+            return Convert.ToString(price + extra) + "kr";
         }
 
-        private void pizzaMenu_SelectedIndexChanged(object sender, EventArgs e)
-        {      // Skal ændres til ItemCheck
-            try
+        private void pizzaMenu_SelectedIndexChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if(e.IsSelected)
             {
                 pizzaDough.SelectedIndex = Convert.ToInt32(pizzas[pizzaMenu.SelectedIndices[0]].dough);
                 pizzaSauce.SelectedIndex = Convert.ToInt32(pizzas[pizzaMenu.SelectedIndices[0]].sauce);
@@ -116,7 +122,6 @@ namespace PizzaApp
                 else
                     pizzaSize.SelectedIndex = 2;
             }
-            catch { }
         }
 
         private void populateLists(XMLLoader loader) // XMLLoader loader
@@ -209,8 +214,29 @@ namespace PizzaApp
                 app = App;
             }
 
+            private List<Pizza> applySale()
+            {
+                List<Pizza> PizzaListCopy = PizzaList;
+                if (PizzaList.Count >= 2 && DrinkList.Count >= 2)
+                {
+                    int greatestAmount = 0;
+                    Pizza greatestPizza = new Pizza();
+                    foreach (Pizza pizza in PizzaListCopy)
+                    {
+                        if (Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price) > greatestAmount)
+                        {
+                            greatestPizza = pizza;
+                            greatestAmount = Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price);
+                        }
+                    }
+                    PizzaListCopy[PizzaListCopy.IndexOf(greatestPizza)].discount = Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(greatestPizza.dough)].price);
+                }
+                return PizzaListCopy;
+            }
+
             public string getPrice()
             {
+                List<Pizza> PizzaList = applySale();
                 int price = 0;
                 foreach (Pizza pizza in PizzaList)
                 {

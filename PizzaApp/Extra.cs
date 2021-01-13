@@ -95,18 +95,17 @@ namespace PizzaApp
             this.Close();
         }
         #region opdater label med pris
-        private void updatePrice(object sender, ItemCheckEventArgs e, ComboBox self)
+        private void updatePrice(object sender, ItemCheckEventArgs e)
         {
             if (e.NewValue == System.Windows.Forms.CheckState.Checked)
-                updatePrice();
+                updatePrice(Convert.ToInt32(Convert.ToString(sender.GetType().GetProperty("SelectedItem").GetValue(sender, null)).Split('-')[1].Split('k')[0]));
         }
         private void updatePrice(object sender, EventArgs e)
         {
-            EventArgs x = e;
-            updatePrice();
+            updatePrice(0);
         }
 
-        private void updatePrice()
+        private void updatePrice(int extra)
         {
             
             Pizza pizza = new Pizza();
@@ -127,7 +126,7 @@ namespace PizzaApp
             if (pizzaSize.SelectedIndex != -1)
                 pizza.size = Convert.ToInt32(loader.Sizes.Size[pizzaSize.SelectedIndex].sId);
 
-            pizzaTotal.Text = "Total: " + returnTo.getPizzaPrice(pizza);
+            pizzaTotal.Text = "Total: " + returnTo.getPizzaPrice(pizza, extra);
         }
         #endregion
 

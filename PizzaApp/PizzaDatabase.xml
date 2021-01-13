@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <file xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <sizes>
-    <size sid="0" name="Stor" price="20"/>
-    <size sid="1" name="Mellem" price="10"/>
-    <size sid="2" name="Lille" price="0"/>
+    <size sId="0" name="Stor" price="20"/>
+    <size sId="1" name="Mellem" price="10"/>
+    <size sId="2" name="Lille" price="0"/>
   </sizes>
   <spices>
     <spice sId ="0" name="Oregano" price ="0"/>

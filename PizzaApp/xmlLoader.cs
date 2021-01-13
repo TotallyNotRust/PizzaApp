@@ -161,7 +161,9 @@ namespace xmlLoader
 
         public int price = 0;
 
-        public int size;
+        public int size = -1;
+
+        public int discount = 0;
 
         private XMLLoader m_parent;
         public void setParent(XMLLoader p_parent)
