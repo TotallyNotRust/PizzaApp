@@ -71,7 +71,9 @@ namespace PizzaApp
             foreach (string i in toppingBox.CheckedItems)
             {
                 pizza.ingredients += toppingBox.Items.IndexOf(i) + ",";
-                pizza.name += i.Split('-')[0] + "og ";
+                pizza.name += i.Split('-')[0];
+                if (toppingBox.Items.IndexOf(i) != toppingBox.Items.Count)
+                    pizza.name += "og ";
             }
             pizza.spices = "";
             foreach (string i in spiceBox.CheckedItems)
@@ -88,8 +90,9 @@ namespace PizzaApp
             Item.SubItems.Add(ingredientList(pizza.ingredients, ingredients)); // Giver listviewitemet ingredienser
             Item.SubItems.Add(returnTo.getPizzaPrice(pizza)); // og pris
             returnTo.pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
-            Item = new ListViewItem(pizza.name); // Laver nyt listviewitem til produkt or giver den navnet på produktet
+            Item = new ListViewItem(loader.Sizes.Size[pizza.size].name + " " + pizza.name.ToLower()); // Laver nyt listviewitem til produkt or giver den navnet på produktet
             Item.SubItems.Add(returnTo.getPizzaPrice(pizza)); // og pris
+            Item.SubItems.Add("false");
             returnTo.pizzaCart.Items.Add(Item);
             returnTo.cart.pizzaList = pizza;
             this.Close();

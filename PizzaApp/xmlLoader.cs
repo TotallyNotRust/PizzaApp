@@ -37,6 +37,8 @@ namespace xmlLoader
         [XmlAttribute(AttributeName = "price")]
         public string price { get; set; }
 
+        public int size;
+
         private XMLLoader m_parent;
         public void setParent(XMLLoader p_parent)
         {

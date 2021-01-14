@@ -160,10 +160,12 @@ namespace PizzaApp
         {
             if (drinkSize.SelectedIndex >= 0)
             {
-                Drink Drink = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]];
-                Drink.price = Convert.ToString(Convert.ToInt32(Drink.price) + Convert.ToInt32(loader.Sizes.Size[drinkSize.SelectedIndex].price));
+                Drink Drink = new Drink();
+                Drink.price = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]].price;
+                Drink.name = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]].name;
+                Drink.size = drinkSize.SelectedIndex;
                 ListViewItem Item = new ListViewItem(Drink.name);
-                Item.SubItems.Add(Drink.price + "kr");
+                Item.SubItems.Add(Convert.ToString((Convert.ToInt32(Drink.price) + Convert.ToInt32(loader.Sizes.Size[drinkSize.SelectedIndex].price)))  + "kr");
                 Item.SubItems.Add("true");
                 pizzaCart.Items.Add(Item);
 
@@ -178,10 +180,16 @@ namespace PizzaApp
             {
                 if (pizzaSize.SelectedIndex >= 0)
                 {
-                    Pizza Pizza = loader.Pizzas.Pizza[pizzaMenu.SelectedIndices[0]];
-                    Pizza.price = Convert.ToInt32(getPizzaPrice(Pizza).Split('k')[0]);
-                    ListViewItem Item = new ListViewItem(Pizza.name);
-                    Item.SubItems.Add(Pizza.price + "kr");
+                    Pizza Pizza = new Pizza();
+                    Pizza.name = pizzaMenu.Items[pizzaMenu.SelectedIndices[0]].Text;
+                    Pizza.ingredients = loader.Pizzas.Pizza[pizzaMenu.SelectedIndices[0]].ingredients;
+                    Pizza.sauce = loader.Pizzas.Pizza[pizzaMenu.SelectedIndices[0]].sauce;
+                    Pizza.dough = loader.Pizzas.Pizza[pizzaMenu.SelectedIndices[0]].dough;
+                    Pizza.pId = loader.Pizzas.Pizza[pizzaMenu.SelectedIndices[0]].pId;
+                    Pizza.spices = loader.Pizzas.Pizza[pizzaMenu.SelectedIndices[0]].spices;
+                    Pizza.size = pizzaSize.SelectedIndex;
+                    ListViewItem Item = new ListViewItem(loader.Sizes.Size[pizzaSize.SelectedIndex].name + " " + Pizza.name.ToLower());
+                    Item.SubItems.Add(getPizzaPrice(Pizza));
                     Item.SubItems.Add("false");
                     pizzaCart.Items.Add(Item);
 
@@ -196,7 +204,16 @@ namespace PizzaApp
 
         private void removeFromCart_Click(object sender, EventArgs e)
         {
-            cart.PizzaList.RemoveAt(pizzaCart.SelectedIndices[0]);
+            if (pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[2].Text == "false")
+            {
+                cart.PizzaList.RemoveAt(cart.PizzaListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
+                cart.PizzaListNames.RemoveAt(cart.PizzaListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
+            }
+            else
+            {
+                cart.DrinkList.RemoveAt(cart.DrinkListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
+                cart.DrinkListNames.RemoveAt(cart.DrinkListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
+            }
             pizzaCart.Items.RemoveAt(pizzaCart.SelectedIndices[0]);
             cart.getPrice();
         }
@@ -204,39 +221,52 @@ namespace PizzaApp
         public class Cart
         {
             private pizzaApp app;
+            public List<string> PizzaListNames = new List<string>();
             public List<Pizza> PizzaList = new List<Pizza>();
-            public Pizza pizzaList { get { return null; } set { PizzaList.Add(value); getPrice(); } }
+            public Pizza pizzaList { get { return null; } set { PizzaList.Add(value); PizzaListNames.Add(loader.Sizes.Size[value.size].name + " " + value.name.ToLower()); getPrice(); } }
+            public List<string> DrinkListNames = new List<string>();
             public List<Drink> DrinkList = new List<Drink>();
-            public Drink drinkList { get { return null; } set { DrinkList.Add(value); getPrice(); } }
+            public Drink drinkList { get { return null; } set { DrinkList.Add(value); DrinkListNames.Add(value.name); getPrice(); } }
             public XMLLoader loader = XMLLoader.LoadXML("..\\..\\PizzaDatabase.xml");
             public void init(pizzaApp App)
             {
                 app = App;
             }
 
-            private List<Pizza> applySale()
+            private int applySale()
             {
-                List<Pizza> PizzaListCopy = PizzaList;
+                int greatestAmount = 0;
+                int eligablePizzas = 0;
                 if (PizzaList.Count >= 2 && DrinkList.Count >= 2)
                 {
-                    int greatestAmount = 0;
-                    Pizza greatestPizza = new Pizza();
-                    foreach (Pizza pizza in PizzaListCopy)
+                    foreach (Pizza pizza in PizzaList)
                     {
                         if (Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price) > greatestAmount)
                         {
-                            greatestPizza = pizza;
                             greatestAmount = Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(pizza.dough)].price);
                         }
+                        if (pizza.size == 0)
+                        {
+                            eligablePizzas += 1;
+                        }
                     }
-                    PizzaListCopy[PizzaListCopy.IndexOf(greatestPizza)].discount = Convert.ToInt32(loader.Doughs.Dough[Convert.ToInt32(greatestPizza.dough)].price);
                 }
-                return PizzaListCopy;
+                if (eligablePizzas >= 2)
+                {
+                    app.discountLabel.Text = "-" + greatestAmount + "kr rabat";
+                    app.discountLabel.Visible = true;
+                    return greatestAmount;
+                }
+                else
+                {
+                    app.discountLabel.Visible = false;
+                    return 0;
+                }
             }
 
             public string getPrice()
             {
-                List<Pizza> PizzaList = applySale();
+                int Discount = applySale();
                 int price = 0;
                 foreach (Pizza pizza in PizzaList)
                 {
@@ -246,8 +276,9 @@ namespace PizzaApp
                 foreach (Drink drink in DrinkList)
                 {
                     price += Convert.ToInt32(drink.price);
+                    price += Convert.ToInt32(loader.Sizes.Size[drink.size].price);
                 }
-                app.pizzaTotal.Text = "Total: " + price + "kr";
+                app.pizzaTotal.Text = "Total: " + (price-Discount) + "kr";
                 return "" + price + "kr";
             }
         }

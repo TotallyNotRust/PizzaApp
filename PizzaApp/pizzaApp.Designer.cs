@@ -54,7 +54,8 @@ namespace PizzaApp
             this.pizzaLabel = new System.Windows.Forms.Label();
             this.drinksLabel = new System.Windows.Forms.Label();
             this.removeFromCart = new System.Windows.Forms.Button();
-            this.offLabel = new System.Windows.Forms.Label();
+            this.discountLabel = new System.Windows.Forms.Label();
+            this.noticeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // pizzaMenu
@@ -102,6 +103,7 @@ namespace PizzaApp
             this.pizzaCart.Location = new System.Drawing.Point(12, 69);
             this.pizzaCart.Name = "pizzaCart";
             this.pizzaCart.Scrollable = false;
+            this.pizzaCart.ShowItemToolTips = true;
             this.pizzaCart.Size = new System.Drawing.Size(195, 281);
             this.pizzaCart.TabIndex = 6;
             this.pizzaCart.UseCompatibleStateImageBehavior = false;
@@ -138,7 +140,7 @@ namespace PizzaApp
             this.pizzaTotal.ForeColor = System.Drawing.SystemColors.ControlText;
             this.pizzaTotal.Location = new System.Drawing.Point(7, 413);
             this.pizzaTotal.Name = "pizzaTotal";
-            this.pizzaTotal.Size = new System.Drawing.Size(194, 39);
+            this.pizzaTotal.Size = new System.Drawing.Size(194, 62);
             this.pizzaTotal.TabIndex = 10;
             this.pizzaTotal.Text = "Total: 0kr";
             // 
@@ -288,22 +290,35 @@ namespace PizzaApp
             this.removeFromCart.UseVisualStyleBackColor = true;
             this.removeFromCart.Click += new System.EventHandler(this.removeFromCart_Click);
             // 
-            // offLabel
+            // discountLabel
             // 
-            this.offLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.offLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.offLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.offLabel.Location = new System.Drawing.Point(7, 445);
-            this.offLabel.Name = "offLabel";
-            this.offLabel.Size = new System.Drawing.Size(194, 30);
-            this.offLabel.TabIndex = 30;
+            this.discountLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.discountLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.discountLabel.Enabled = false;
+            this.discountLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.discountLabel.Location = new System.Drawing.Point(7, 445);
+            this.discountLabel.Name = "discountLabel";
+            this.discountLabel.Size = new System.Drawing.Size(194, 30);
+            this.discountLabel.TabIndex = 30;
+            this.discountLabel.Visible = false;
+            // 
+            // noticeLabel
+            // 
+            this.noticeLabel.AutoSize = true;
+            this.noticeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.noticeLabel.Location = new System.Drawing.Point(280, 21);
+            this.noticeLabel.Name = "noticeLabel";
+            this.noticeLabel.Size = new System.Drawing.Size(72, 13);
+            this.noticeLabel.TabIndex = 31;
+            this.noticeLabel.Text = "*Priser for lille.";
             // 
             // pizzaApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(803, 484);
-            this.Controls.Add(this.offLabel);
+            this.Controls.Add(this.noticeLabel);
+            this.Controls.Add(this.discountLabel);
             this.Controls.Add(this.removeFromCart);
             this.Controls.Add(this.drinksLabel);
             this.Controls.Add(this.pizzaLabel);
@@ -356,7 +371,8 @@ namespace PizzaApp
         private System.Windows.Forms.Label drinksLabel;
         private System.Windows.Forms.Button removeFromCart;
         private System.Windows.Forms.ColumnHeader isDrink;
-        public System.Windows.Forms.Label offLabel;
+        public System.Windows.Forms.Label discountLabel;
+        private System.Windows.Forms.Label noticeLabel;
     }
 }
 
