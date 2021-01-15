@@ -128,9 +128,18 @@ namespace PizzaApp
             try
             {
                 if (e.NewValue == System.Windows.Forms.CheckState.Checked)
-                    updatePrice(Convert.ToInt32(Convert.ToString(sender.GetType().GetProperty("SelectedItem").GetValue(sender, null)).Split('-')[1].Split('k')[0]));
+                {
+                    string value = Convert.ToString(sender.GetType().GetProperty("SelectedItem").GetValue(sender, null));
+                    if (value != "")
+                        updatePrice(Convert.ToInt32(value.Split('-')[1].Split('k')[0]));
+                }
+
                 else
-                    updatePrice(Convert.ToInt32(Convert.ToString(sender.GetType().GetProperty("SelectedItem").GetValue(sender, null)).Split('-')[1].Split('k')[0]) * -1);
+                {
+                    string value = Convert.ToString(sender.GetType().GetProperty("SelectedItem").GetValue(sender, null));
+                    if (value != "")
+                        updatePrice(Convert.ToInt32(value.Split('-')[1].Split('k')[0]) * -1);
+                }
             }
             catch { } // Det her kan sikkert sagtens fikses men jeg løber tør for tid, updateprice kører en gang for meget og jeg bliver derfor nødt til bare at lade være med at smide en exception
         }
