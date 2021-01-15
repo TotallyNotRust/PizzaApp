@@ -20,14 +20,14 @@ namespace PizzaApp
         public List<Dough> doughs = new List<Dough>();
         public Cart cart = new Cart();
 
-        public string returnValue { get; set; }
-
         public void populateLists()
         {
+            // Looper gennem ingredienser og putter dem i en liste
             foreach (Ingredient ing in loader.Ingredients.Ingredient)
             {
                 ingredients.Add(ing);
             }
+            // Lopper gennem Pizzaer og putter dem i en liste
             foreach (Pizza m_product in loader.Pizzas.Pizza) // køere gennem alle produkter
             {
                 ListViewItem Item = new ListViewItem(m_product.name); // Laver nyt listviewitem til produkt or giver den navnet på produktet
@@ -37,7 +37,7 @@ namespace PizzaApp
                 pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
                 pizzas.Add(m_product);
             }
-
+            // Looper gennem brød, sovs, størrelser og drikkevare og putter dem på forskellige lister
             foreach (Dough Dough in loader.Doughs.Dough)
             {
                 pizzaDough.Items.Add(Dough.name + " - " + Dough.price + "");
@@ -73,34 +73,41 @@ namespace PizzaApp
 
         public string ingredientList(string needIngredients, List<Ingredient> allIngredients)
         {
+            // Tager en string med id på forskellige ingredienser i formatet x,x,x or returner navnene på ingredienser i samme format
             string str = "";
             string[] newIngredients = needIngredients.Split(',');
             foreach (string ingredient in newIngredients)
             {
-                str = str + allIngredients.ElementAt(Convert.ToInt32(ingredient)).name + ", ";
+                if (ingredient != "")
+                str += allIngredients.ElementAt(Convert.ToInt32(ingredient)).name + ", ";
             }
             return str;
         }
+        #region getPizzaPrice
+        // Regner prisen på en pizza class
         public string getPizzaPrice(Pizza pizza)
         {
             return getPizzaPrice(pizza, 0);
         }
-
+       
         public string getPizzaPrice(Pizza pizza, int extra)
         {
             int price = 0;
+            // Regner prisen på ingredienser
             if (pizza.ingredients != null)
                 foreach (string i in pizza.ingredients.Split(','))
                 {
                     if (i != "")
                         price += Convert.ToInt32(ingredients[Convert.ToInt32(i)].price);
                 }
+            // Regner pris på kryderier
             if (pizza.spices != null)
                 foreach (string i in pizza.spices.Split(','))
                 {
                     if (i != "")
                         price += Convert.ToInt32(loader.Spices.Spice[Convert.ToInt32(i)].price);
                 }
+            // Udregner pris på sovs, dej, og størrelse
             if (pizza.sauce != null)
                 price += Convert.ToInt32(loader.Sauces.Sauce[Convert.ToInt32(pizza.sauce)].price);
             if (pizza.dough != null)
@@ -110,9 +117,11 @@ namespace PizzaApp
 
             return Convert.ToString(price + extra) + "kr";
         }
+        #endregion
 
         private void pizzaMenu_SelectedIndexChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
+            // Når brugeren klikker på en ny pizza i ListView'et ændre den værdien i sovs, dej og strørrelse dropdown menuer
             if(e.IsSelected)
             {
                 pizzaDough.SelectedIndex = Convert.ToInt32(pizzas[pizzaMenu.SelectedIndices[0]].dough);
@@ -120,12 +129,14 @@ namespace PizzaApp
                 if (Convert.ToInt32(pizzas[pizzaMenu.SelectedIndices[0]].size) >= 0)
                     pizzaSize.SelectedIndex = Convert.ToInt32(pizzas[pizzaMenu.SelectedIndices[0]].size);
                 else
+                    // Hvis ikke pizzaen har en størrelse bliver den sat til lille som standard
                     pizzaSize.SelectedIndex = 2;
             }
         }
 
         private void populateLists(XMLLoader loader) // XMLLoader loader
         {
+            // Loader alle ingredienser i en liste
             foreach (Ingredient ing in loader.Ingredients.Ingredient)
             {
                 ingredients.Add(ing);
@@ -138,7 +149,7 @@ namespace PizzaApp
                 Item.SubItems.Add(getPizzaPrice(m_product)); // og pris
                 pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
             }
-
+            // Loader dej og sovs og putter dem i deres dropdown menuer
             foreach (Dough Dough in loader.Doughs.Dough)
             {
                 pizzaDough.Items.Add(Dough.name);
@@ -152,34 +163,48 @@ namespace PizzaApp
 
         private void addPizzaButton_Click(object sender, EventArgs e)
         {
-            Extra extra = new Extra(ingredients, loader, this);
-            extra.Show();
+            if (pizzaMenu.SelectedIndices.Count > 0)
+            {
+                Extra extra = new Extra(ingredients, loader, pizzas[pizzaMenu.SelectedIndices[0]], this);
+                extra.Show();
+            }
+            else
+            {
+                Extra extra = new Extra(ingredients, loader, null, this);
+                extra.Show();
+            }
         }
 
         private void addDrink_Click(object sender, EventArgs e)
         {
-            if (drinkSize.SelectedIndex >= 0)
+            if (drinksMenu.SelectedIndices.Count > 0)
             {
-                Drink Drink = new Drink();
-                Drink.price = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]].price;
-                Drink.name = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]].name;
-                Drink.size = drinkSize.SelectedIndex;
-                ListViewItem Item = new ListViewItem(Drink.name);
-                Item.SubItems.Add(Convert.ToString((Convert.ToInt32(Drink.price) + Convert.ToInt32(loader.Sizes.Size[drinkSize.SelectedIndex].price)))  + "kr");
-                Item.SubItems.Add("true");
-                pizzaCart.Items.Add(Item);
+                if (drinkSize.SelectedIndex >= 0)
+                {
+                    Drink Drink = new Drink();
+                    Drink.price = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]].price;
+                    Drink.name = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]].name;
+                    Drink.size = drinkSize.SelectedIndex;
+                    ListViewItem Item = new ListViewItem(Drink.name);
+                    Item.SubItems.Add(Convert.ToString((Convert.ToInt32(Drink.price) + Convert.ToInt32(loader.Sizes.Size[drinkSize.SelectedIndex].price))) + "kr");
+                    Item.SubItems.Add("true");
+                    pizzaCart.Items.Add(Item);
 
-                cart.drinkList = Drink;
+                    cart.drinkList = Drink;
+                }
+                else MessageBox.Show("Vælg venligst en størrelse");
             }
-            else MessageBox.Show("Vælg venligst en størrelse");
+            else MessageBox.Show("Vælg venligst en drikkevare");
         }
 
         private void addPrizza_Click(object sender, EventArgs e)
         {
+            // Tjekker om brugeren har valgt pizza og størrelse
             if (pizzaMenu.SelectedIndices.Count >= 1)
             {
                 if (pizzaSize.SelectedIndex >= 0)
                 {
+                    // Laver kopi af den pizza som er valgt og putter den i vognen
                     Pizza Pizza = new Pizza();
                     Pizza.name = pizzaMenu.Items[pizzaMenu.SelectedIndices[0]].Text;
                     Pizza.ingredients = loader.Pizzas.Pizza[pizzaMenu.SelectedIndices[0]].ingredients;
@@ -196,6 +221,7 @@ namespace PizzaApp
                     cart.pizzaList = Pizza;
 
                 }
+                // Hvis brugeren ikke har valgt det han skal, kommer der en tekst boks og siger hvad de har glemt
                 else MessageBox.Show("Vælg venligst en størrelse");
             }
             else MessageBox.Show("Vælg venligst en pizza");
@@ -204,22 +230,29 @@ namespace PizzaApp
 
         private void removeFromCart_Click(object sender, EventArgs e)
         {
-            if (pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[2].Text == "false")
+            if (pizzaCart.SelectedIndices.Count > 0)
             {
-                cart.PizzaList.RemoveAt(cart.PizzaListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
-                cart.PizzaListNames.RemoveAt(cart.PizzaListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
+                // Tjekker om brugeren har valgt en pizza eller en drikkevare og fjerner den fra listen
+                if (pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[2].Text == "false")
+                {
+                    cart.PizzaList.RemoveAt(cart.PizzaListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
+                    cart.PizzaListNames.RemoveAt(cart.PizzaListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
+                }
+                else
+                {
+                    cart.DrinkList.RemoveAt(cart.DrinkListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
+                    cart.DrinkListNames.RemoveAt(cart.DrinkListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
+                }
+                pizzaCart.Items.RemoveAt(pizzaCart.SelectedIndices[0]);
+                // Opdatere prisen
+                cart.getPrice();
             }
-            else
-            {
-                cart.DrinkList.RemoveAt(cart.DrinkListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
-                cart.DrinkListNames.RemoveAt(cart.DrinkListNames.IndexOf(pizzaCart.Items[pizzaCart.SelectedIndices[0]].SubItems[0].Text));
-            }
-            pizzaCart.Items.RemoveAt(pizzaCart.SelectedIndices[0]);
-            cart.getPrice();
         }
 
         public class Cart
         {
+            #region variables
+            // Sætter diverse variabler
             private pizzaApp app;
             public List<string> PizzaListNames = new List<string>();
             public List<Pizza> PizzaList = new List<Pizza>();
@@ -232,9 +265,11 @@ namespace PizzaApp
             {
                 app = App;
             }
+            #endregion
 
             private int applySale()
             {
+                // Tjekker om brugeren kvalificere for rabat
                 int greatestAmount = 0;
                 int eligablePizzas = 0;
                 if (PizzaList.Count >= 2 && DrinkList.Count >= 2)
@@ -251,12 +286,14 @@ namespace PizzaApp
                         }
                     }
                 }
+                // Hvis brugeren kvalificere ændre den teksten på rabat label
                 if (eligablePizzas >= 2)
                 {
                     app.discountLabel.Text = "-" + greatestAmount + "kr rabat";
                     app.discountLabel.Visible = true;
                     return greatestAmount;
                 }
+                // Ellers gemmer den label
                 else
                 {
                     app.discountLabel.Visible = false;
@@ -266,6 +303,7 @@ namespace PizzaApp
 
             public string getPrice()
             {
+                // Udregner prisen på vognen
                 int Discount = applySale();
                 int price = 0;
                 foreach (Pizza pizza in PizzaList)
@@ -278,8 +316,21 @@ namespace PizzaApp
                     price += Convert.ToInt32(drink.price);
                     price += Convert.ToInt32(loader.Sizes.Size[drink.size].price);
                 }
+                // Ændre label med pris og returner prisen
                 app.pizzaTotal.Text = "Total: " + (price-Discount) + "kr";
                 return "" + price + "kr";
+            }
+        }
+
+        private void pizzaMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (pizzaMenu.SelectedIndices.Count > 0)
+            {
+                customPizzaButon.Text = "Rediger pizza";
+            }
+            else
+            {
+                customPizzaButon.Text = "Lav selv pizza";
             }
         }
     }

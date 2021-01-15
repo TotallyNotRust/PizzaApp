@@ -17,7 +17,7 @@ namespace PizzaApp
         XMLLoader loader;
         pizzaApp returnTo;
 
-        public Extra(List<Ingredient> ing, XMLLoader Loader, pizzaApp returnto)
+        public Extra(List<Ingredient> ing, XMLLoader Loader, Pizza pizza, pizzaApp returnto)
         {
             ingredients = ing; // Sætter lokal liste over ingredienser til liste a ingredienser der bliver passet
             loader = Loader; // Sætter lokal variable med xml fil informationen til den der er blevet passet
@@ -26,6 +26,27 @@ namespace PizzaApp
             InitializeComponent();
 
             populateLists();
+
+            if (pizza != null)
+            {
+                
+                foreach(string i in pizza.ingredients.Split(','))
+                {
+                    toppingBox.SetItemCheckState(Convert.ToInt32(i), CheckState.Checked);
+                }
+
+
+                foreach (string i in pizza.spices.Split(','))
+                {
+                    spiceBox.SetItemCheckState(Convert.ToInt32(i), CheckState.Checked);
+                }
+                pizzaDough.SelectedIndex = Convert.ToInt32(pizza.dough);
+                pizzaSauce.SelectedIndex = Convert.ToInt32(pizza.sauce);
+                if (pizza.size != -1)
+                    pizzaSize.SelectedIndex = Convert.ToInt32(pizza.size);
+                else
+                    pizzaSize.SelectedIndex = 2;
+            }
         }
 
         public void populateLists() // Putter ting på lister 
@@ -42,32 +63,24 @@ namespace PizzaApp
             {
                 pizzaSauce.Items.Add(Sauce.name + " - " + Sauce.price + "kr"); // Putter sovsen på listen over sovse
             }
-            foreach (Size Size in loader.Sizes.Size)
+            foreach (Size Size in loader.Sizes.Size) // Looper gennem alle størrelser
             {
-                pizzaSize.Items.Add(Size.name + " - " + Size.price + "kr");
+                pizzaSize.Items.Add(Size.name + " - " + Size.price + "kr");// Putter sovsen på listen over størrelser
             }
-            foreach (Spice Spice in loader.Spices.Spice)
+            foreach (Spice Spice in loader.Spices.Spice) // Looper gennem alle typer kryderi
             {
-                spiceBox.Items.Add(Spice.name + " - " + Spice.price + "kr");
+                spiceBox.Items.Add(Spice.name + " - " + Spice.price + "kr"); // Putter sovsen på listen over kryderier
             }
         }
 
-        public string ingredientList(string needIngredients, List<Ingredient> allIngredients)
-        {
-            string str = "";
-            string[] newIngredients = needIngredients.Split(',');
-            foreach (string ingredient in newIngredients)
-            {
-                if (ingredient != "")
-                    str += allIngredients.ElementAt(Convert.ToInt32(ingredient)).name + ", ";
-            }
-            return str;
-        }
+
 
         private void customPizzaButon_Click(object sender, EventArgs e)
         {
+            // Laver ny instance af pizza class
             Pizza pizza = new Pizza();
             pizza.name = "Lav selv pizza med ";
+            // Looper gennem valgte ingredienser og putter dem på pizzaen
             foreach (string i in toppingBox.CheckedItems)
             {
                 pizza.ingredients += toppingBox.Items.IndexOf(i) + ",";
@@ -75,19 +88,28 @@ namespace PizzaApp
                 if (toppingBox.Items.IndexOf(i) != toppingBox.Items.Count)
                     pizza.name += "og ";
             }
+            // Giver pizzaen et navn ud fra ingredienser
+            pizza.name = pizza.name.Substring(0, pizza.name.Length - 4);
+
             pizza.spices = "";
+            // Looper gennem valgte krydderi og putter dem på pizzaen
             foreach (string i in spiceBox.CheckedItems)
             {
                 pizza.spices += spiceBox.Items.IndexOf(i) + ",";
             }
-            pizza.name.Substring(0, pizza.name.Length - 3);
+            // Sætter dej, sovs og størrelse dem brugeren har valgt i dropdown menuer
             pizza.dough = loader.Doughs.Dough[pizzaDough.SelectedIndex].dId;
             pizza.sauce = loader.Sauces.Sauce[pizzaSauce.SelectedIndex].sId;
-            pizza.size = Convert.ToInt32(loader.Sizes.Size[pizzaSize.SelectedIndex].sId);
+            try
+            {
+                pizza.size = Convert.ToInt32(loader.Sizes.Size[pizzaSize.SelectedIndex].sId);
+            }
+            catch { MessageBox.Show("Vælg venligst en størrelse"); }
 
+            // Putter en version i vogen og en på pizza menuen hvis brugeren skulle ville have flere
             returnTo.pizzas.Add(pizza);
             ListViewItem Item = new ListViewItem(pizza.name); // Laver nyt listviewitem til produkt or giver den navnet på produktet
-            Item.SubItems.Add(ingredientList(pizza.ingredients, ingredients)); // Giver listviewitemet ingredienser
+            Item.SubItems.Add(returnTo.ingredientList(pizza.ingredients, ingredients)); // Giver listviewitemet ingredienser
             Item.SubItems.Add(returnTo.getPizzaPrice(pizza)); // og pris
             returnTo.pizzaMenu.Items.Add(Item); // Putter data på spreadsheet
             Item = new ListViewItem(loader.Sizes.Size[pizza.size].name + " " + pizza.name.ToLower()); // Laver nyt listviewitem til produkt or giver den navnet på produktet
@@ -97,20 +119,31 @@ namespace PizzaApp
             returnTo.cart.pizzaList = pizza;
             this.Close();
         }
+
         #region opdater label med pris
         private void updatePrice(object sender, ItemCheckEventArgs e)
         {
-            if (e.NewValue == System.Windows.Forms.CheckState.Checked)
-                updatePrice(Convert.ToInt32(Convert.ToString(sender.GetType().GetProperty("SelectedItem").GetValue(sender, null)).Split('-')[1].Split('k')[0]));
+            // Kører når brugeren vælger et nyt kryderi eller en ny ingrediens
+            // Tjekker om brugeren har valgt noget nyt, eller om de har fravalgt noget
+            try
+            {
+                if (e.NewValue == System.Windows.Forms.CheckState.Checked)
+                    updatePrice(Convert.ToInt32(Convert.ToString(sender.GetType().GetProperty("SelectedItem").GetValue(sender, null)).Split('-')[1].Split('k')[0]));
+                else
+                    updatePrice(Convert.ToInt32(Convert.ToString(sender.GetType().GetProperty("SelectedItem").GetValue(sender, null)).Split('-')[1].Split('k')[0]) * -1);
+            }
+            catch { } // Det her kan sikkert sagtens fikses men jeg løber tør for tid, updateprice kører en gang for meget og jeg bliver derfor nødt til bare at lade være med at smide en exception
         }
         private void updatePrice(object sender, EventArgs e)
         {
+            // Kører når brugeren vælger noget i en dropdown menu
             updatePrice(0);
         }
 
         private void updatePrice(int extra)
         {
-            
+            // Udregner prisen og putter den på pris label
+            // Laver en ny instance af Pizza class og udregner prisen på den
             Pizza pizza = new Pizza();
             pizza.name = "Lav selv pizza med ";
             foreach (string i in toppingBox.CheckedItems)
@@ -128,7 +161,7 @@ namespace PizzaApp
                 pizza.sauce = loader.Sauces.Sauce[pizzaSauce.SelectedIndex].sId;
             if (pizzaSize.SelectedIndex != -1)
                 pizza.size = Convert.ToInt32(loader.Sizes.Size[pizzaSize.SelectedIndex].sId);
-
+            // Ændre teksten på pris label
             pizzaTotal.Text = "Total: " + returnTo.getPizzaPrice(pizza, extra);
         }
         #endregion

@@ -36,6 +36,9 @@ namespace PizzaApp
             this.pizzaSize = new System.Windows.Forms.ComboBox();
             this.customPizzaButon = new System.Windows.Forms.Button();
             this.spiceBox = new System.Windows.Forms.CheckedListBox();
+            this.sizeLabel = new System.Windows.Forms.Label();
+            this.breadLabel = new System.Windows.Forms.Label();
+            this.sauceLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // toppingBox
@@ -50,6 +53,7 @@ namespace PizzaApp
             // pizzaDough
             // 
             this.pizzaDough.DropDownHeight = 102;
+            this.pizzaDough.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.pizzaDough.FormattingEnabled = true;
             this.pizzaDough.IntegralHeight = false;
             this.pizzaDough.ItemHeight = 13;
@@ -57,17 +61,16 @@ namespace PizzaApp
             this.pizzaDough.Name = "pizzaDough";
             this.pizzaDough.Size = new System.Drawing.Size(133, 21);
             this.pizzaDough.TabIndex = 19;
-            this.pizzaDough.Text = "Brød";
             this.pizzaDough.SelectedIndexChanged += new System.EventHandler(this.updatePrice);
             // 
             // pizzaSauce
             // 
+            this.pizzaSauce.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.pizzaSauce.FormattingEnabled = true;
             this.pizzaSauce.Location = new System.Drawing.Point(163, 122);
             this.pizzaSauce.Name = "pizzaSauce";
             this.pizzaSauce.Size = new System.Drawing.Size(133, 21);
             this.pizzaSauce.TabIndex = 20;
-            this.pizzaSauce.Text = "Sovs";
             this.pizzaSauce.SelectedIndexChanged += new System.EventHandler(this.updatePrice);
             // 
             // pizzaTotal
@@ -81,12 +84,12 @@ namespace PizzaApp
             // 
             // pizzaSize
             // 
+            this.pizzaSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.pizzaSize.FormattingEnabled = true;
             this.pizzaSize.Location = new System.Drawing.Point(163, 172);
             this.pizzaSize.Name = "pizzaSize";
             this.pizzaSize.Size = new System.Drawing.Size(133, 21);
             this.pizzaSize.TabIndex = 22;
-            this.pizzaSize.Text = "Størrelse";
             this.pizzaSize.SelectedIndexChanged += new System.EventHandler(this.updatePrice);
             // 
             // customPizzaButon
@@ -109,11 +112,44 @@ namespace PizzaApp
             this.spiceBox.TabIndex = 24;
             this.spiceBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.updatePrice);
             // 
+            // sizeLabel
+            // 
+            this.sizeLabel.AutoSize = true;
+            this.sizeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sizeLabel.Location = new System.Drawing.Point(160, 156);
+            this.sizeLabel.Name = "sizeLabel";
+            this.sizeLabel.Size = new System.Drawing.Size(48, 13);
+            this.sizeLabel.TabIndex = 35;
+            this.sizeLabel.Text = "Størrelse";
+            // 
+            // breadLabel
+            // 
+            this.breadLabel.AutoSize = true;
+            this.breadLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.breadLabel.Location = new System.Drawing.Point(160, 56);
+            this.breadLabel.Name = "breadLabel";
+            this.breadLabel.Size = new System.Drawing.Size(29, 13);
+            this.breadLabel.TabIndex = 36;
+            this.breadLabel.Text = "Brød";
+            // 
+            // sauceLabel
+            // 
+            this.sauceLabel.AutoSize = true;
+            this.sauceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sauceLabel.Location = new System.Drawing.Point(160, 106);
+            this.sauceLabel.Name = "sauceLabel";
+            this.sauceLabel.Size = new System.Drawing.Size(31, 13);
+            this.sauceLabel.TabIndex = 37;
+            this.sauceLabel.Text = "Sovs";
+            // 
             // Extra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(306, 268);
+            this.Controls.Add(this.sauceLabel);
+            this.Controls.Add(this.breadLabel);
+            this.Controls.Add(this.sizeLabel);
             this.Controls.Add(this.spiceBox);
             this.Controls.Add(this.customPizzaButon);
             this.Controls.Add(this.pizzaSize);
@@ -124,6 +160,7 @@ namespace PizzaApp
             this.Name = "Extra";
             this.Text = " ";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -136,5 +173,8 @@ namespace PizzaApp
         private System.Windows.Forms.ComboBox pizzaSize;
         private System.Windows.Forms.Button customPizzaButon;
         private System.Windows.Forms.CheckedListBox spiceBox;
+        private System.Windows.Forms.Label sizeLabel;
+        private System.Windows.Forms.Label breadLabel;
+        private System.Windows.Forms.Label sauceLabel;
     }
 }

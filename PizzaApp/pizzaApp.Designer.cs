@@ -56,6 +56,10 @@ namespace PizzaApp
             this.removeFromCart = new System.Windows.Forms.Button();
             this.discountLabel = new System.Windows.Forms.Label();
             this.noticeLabel = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // pizzaMenu
@@ -71,11 +75,12 @@ namespace PizzaApp
             this.pizzaMenu.Name = "pizzaMenu";
             this.pizzaMenu.Scrollable = false;
             this.pizzaMenu.ShowItemToolTips = true;
-            this.pizzaMenu.Size = new System.Drawing.Size(357, 281);
+            this.pizzaMenu.Size = new System.Drawing.Size(357, 269);
             this.pizzaMenu.TabIndex = 5;
             this.pizzaMenu.UseCompatibleStateImageBehavior = false;
             this.pizzaMenu.View = System.Windows.Forms.View.Details;
             this.pizzaMenu.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.pizzaMenu_SelectedIndexChanged);
+            this.pizzaMenu.SelectedIndexChanged += new System.EventHandler(this.pizzaMenu_SelectedIndexChanged);
             // 
             // pizzaName
             // 
@@ -104,7 +109,7 @@ namespace PizzaApp
             this.pizzaCart.Name = "pizzaCart";
             this.pizzaCart.Scrollable = false;
             this.pizzaCart.ShowItemToolTips = true;
-            this.pizzaCart.Size = new System.Drawing.Size(195, 281);
+            this.pizzaCart.Size = new System.Drawing.Size(195, 269);
             this.pizzaCart.TabIndex = 6;
             this.pizzaCart.UseCompatibleStateImageBehavior = false;
             this.pizzaCart.View = System.Windows.Forms.View.Details;
@@ -155,7 +160,7 @@ namespace PizzaApp
             // addPrizza
             // 
             this.addPrizza.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.addPrizza.Location = new System.Drawing.Point(213, 407);
+            this.addPrizza.Location = new System.Drawing.Point(213, 425);
             this.addPrizza.Name = "addPrizza";
             this.addPrizza.Size = new System.Drawing.Size(133, 48);
             this.addPrizza.TabIndex = 20;
@@ -166,7 +171,7 @@ namespace PizzaApp
             // customPizzaButon
             // 
             this.customPizzaButon.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.customPizzaButon.Location = new System.Drawing.Point(213, 356);
+            this.customPizzaButon.Location = new System.Drawing.Point(213, 350);
             this.customPizzaButon.Name = "customPizzaButon";
             this.customPizzaButon.Size = new System.Drawing.Size(133, 45);
             this.customPizzaButon.TabIndex = 4;
@@ -176,24 +181,24 @@ namespace PizzaApp
             // 
             // pizzaSauce
             // 
+            this.pizzaSauce.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.pizzaSauce.FormattingEnabled = true;
-            this.pizzaSauce.Location = new System.Drawing.Point(352, 390);
+            this.pizzaSauce.Location = new System.Drawing.Point(352, 410);
             this.pizzaSauce.Name = "pizzaSauce";
             this.pizzaSauce.Size = new System.Drawing.Size(190, 21);
             this.pizzaSauce.TabIndex = 19;
-            this.pizzaSauce.Text = "Sovs";
             // 
             // pizzaDough
             // 
             this.pizzaDough.DropDownHeight = 102;
+            this.pizzaDough.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.pizzaDough.FormattingEnabled = true;
             this.pizzaDough.IntegralHeight = false;
             this.pizzaDough.ItemHeight = 13;
-            this.pizzaDough.Location = new System.Drawing.Point(352, 363);
+            this.pizzaDough.Location = new System.Drawing.Point(352, 370);
             this.pizzaDough.Name = "pizzaDough";
             this.pizzaDough.Size = new System.Drawing.Size(190, 21);
             this.pizzaDough.TabIndex = 18;
-            this.pizzaDough.Text = "Brød";
             // 
             // drinksMenu
             // 
@@ -206,7 +211,7 @@ namespace PizzaApp
             this.drinksMenu.Location = new System.Drawing.Point(581, 69);
             this.drinksMenu.Name = "drinksMenu";
             this.drinksMenu.Scrollable = false;
-            this.drinksMenu.Size = new System.Drawing.Size(182, 281);
+            this.drinksMenu.Size = new System.Drawing.Size(182, 269);
             this.drinksMenu.TabIndex = 21;
             this.drinksMenu.UseCompatibleStateImageBehavior = false;
             this.drinksMenu.View = System.Windows.Forms.View.Details;
@@ -222,21 +227,21 @@ namespace PizzaApp
             // 
             // pizzaSize
             // 
+            this.pizzaSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.pizzaSize.FormattingEnabled = true;
-            this.pizzaSize.Location = new System.Drawing.Point(352, 417);
+            this.pizzaSize.Location = new System.Drawing.Point(352, 451);
             this.pizzaSize.Name = "pizzaSize";
             this.pizzaSize.Size = new System.Drawing.Size(190, 21);
             this.pizzaSize.TabIndex = 22;
-            this.pizzaSize.Text = "Størrelse";
             // 
             // drinkSize
             // 
+            this.drinkSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.drinkSize.FormattingEnabled = true;
             this.drinkSize.Location = new System.Drawing.Point(581, 356);
             this.drinkSize.Name = "drinkSize";
             this.drinkSize.Size = new System.Drawing.Size(182, 21);
             this.drinkSize.TabIndex = 23;
-            this.drinkSize.Text = "Størrelse";
             // 
             // addDrink
             // 
@@ -312,11 +317,55 @@ namespace PizzaApp
             this.noticeLabel.TabIndex = 31;
             this.noticeLabel.Text = "*Priser for lille.";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(352, 350);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.TabIndex = 32;
+            this.label2.Text = "Brød";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(352, 394);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(31, 13);
+            this.label3.TabIndex = 33;
+            this.label3.Text = "Sovs";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(352, 435);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(48, 13);
+            this.label4.TabIndex = 34;
+            this.label4.Text = "Størrelse";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(578, 340);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 13);
+            this.label5.TabIndex = 35;
+            this.label5.Text = "Størrelse";
+            // 
             // pizzaApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(803, 484);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.noticeLabel);
             this.Controls.Add(this.discountLabel);
             this.Controls.Add(this.removeFromCart);
@@ -373,6 +422,10 @@ namespace PizzaApp
         private System.Windows.Forms.ColumnHeader isDrink;
         public System.Windows.Forms.Label discountLabel;
         private System.Windows.Forms.Label noticeLabel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }
 

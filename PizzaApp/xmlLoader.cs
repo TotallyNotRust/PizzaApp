@@ -5,6 +5,7 @@ using System.IO;
 
 namespace xmlLoader
 {
+    // Laver classes og gør dem klar til at loade xml data
     public class Spice
     {
         [XmlAttribute(AttributeName = "sId")]
@@ -184,6 +185,7 @@ namespace xmlLoader
     [XmlRoot(ElementName = "file")]
     public class XMLLoader
     {
+        // Laver instance af de forskellige classes
         [XmlElement(ElementName = "pizzas")]
         public Pizzas Pizzas { get; set; }
         [XmlElement(ElementName = "sauces")]
@@ -203,6 +205,7 @@ namespace xmlLoader
 
         public static XMLLoader LoadXML(String path)
         {
+            // Loader filen og laver en xml serializer
             m_path = path;
             XmlSerializer serializer = new XmlSerializer(typeof(XMLLoader));
             StreamReader reader = new StreamReader(path);
@@ -212,16 +215,9 @@ namespace xmlLoader
             return m_sys;
         }
 
-        public void Save()
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(XMLLoader));
-            StreamWriter writer = new StreamWriter(m_path);
-            serializer.Serialize(writer, this);
-            writer.Close();
-        }
-
         public void setParents()
         {
+            // Sætter m_child i de forskellige classes, den kan bruges til at finde hvad classens parent er.
             foreach (Pizza m_child in Pizzas.Pizza)
                 m_child.setParent(this);
             foreach (Sauce m_child in Sauces.Sauce)
