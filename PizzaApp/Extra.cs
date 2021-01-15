@@ -173,6 +173,5 @@ namespace PizzaApp
             pizzaTotal.Text = "Total: " + returnTo.getPizzaPrice(pizza, extra);
         }
         #endregion
-
     }
 }

@@ -163,6 +163,7 @@ namespace PizzaApp
 
         private void addPizzaButton_Click(object sender, EventArgs e)
         {
+            // Åbner "Lav selv pizza" menuen
             if (pizzaMenu.SelectedIndices.Count > 0)
             {
                 Extra extra = new Extra(ingredients, loader, pizzas[pizzaMenu.SelectedIndices[0]], this);
@@ -181,7 +182,7 @@ namespace PizzaApp
             {
                 if (drinkSize.SelectedIndex >= 0)
                 {
-                    // Laver en ny instance af drink class
+                    // Laver en ny instance af drink class og putter den i vognen
                     Drink Drink = new Drink();
                     Drink.price = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]].price;
                     Drink.name = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]].name;
@@ -325,6 +326,7 @@ namespace PizzaApp
 
         private void pizzaMenu_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Ændre lav selv pizza knappen når brugeren klikker på en pizza
             if (pizzaMenu.SelectedIndices.Count > 0)
             {
                 customPizzaButon.Text = "Rediger pizza";
