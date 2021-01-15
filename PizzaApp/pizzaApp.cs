@@ -181,6 +181,7 @@ namespace PizzaApp
             {
                 if (drinkSize.SelectedIndex >= 0)
                 {
+                    // Laver en ny instance af drink class
                     Drink Drink = new Drink();
                     Drink.price = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]].price;
                     Drink.name = loader.Drinks.Drink[drinksMenu.SelectedIndices[0]].name;

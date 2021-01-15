@@ -27,15 +27,14 @@ namespace PizzaApp
 
             populateLists();
 
+            // Hvis en pizza bliver passed
             if (pizza != null)
             {
-                
+                // Vælger de ingredienser, krydderier, sovs, dej og størrelse der er på pizzaen der er blevet passed
                 foreach(string i in pizza.ingredients.Split(','))
                 {
                     toppingBox.SetItemCheckState(Convert.ToInt32(i), CheckState.Checked);
                 }
-
-
                 foreach (string i in pizza.spices.Split(','))
                 {
                     spiceBox.SetItemCheckState(Convert.ToInt32(i), CheckState.Checked);
@@ -44,7 +43,7 @@ namespace PizzaApp
                 pizzaSauce.SelectedIndex = Convert.ToInt32(pizza.sauce);
                 if (pizza.size != -1)
                     pizzaSize.SelectedIndex = Convert.ToInt32(pizza.size);
-                else
+                else // Hvis ikke pizzaen har en størrelse sættes den til lille som standard
                     pizzaSize.SelectedIndex = 2;
             }
         }
