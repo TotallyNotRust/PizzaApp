@@ -322,6 +322,10 @@ namespace PizzaApp
                 app.pizzaTotal.Text = "Total: " + (price-Discount) + "kr";
                 return "" + price + "kr";
             }
+            public bool isEmpty()
+            {
+                return PizzaList.Count > 0 || DrinkList.Count > 0;
+            }
         }
 
         private void pizzaMenu_SelectedIndexChanged(object sender, EventArgs e)
@@ -339,7 +343,15 @@ namespace PizzaApp
 
         private void orderButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Ordrer placeret");
+            if (cart.isEmpty())
+            {
+                var x = MessageBox.Show("Ordrer placeret");
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Vælg mindst en pizza eller drikkevarer");
+            }
         }
     }
 }
