@@ -60,6 +60,7 @@ namespace PizzaApp
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.orderButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pizzaMenu
@@ -287,9 +288,9 @@ namespace PizzaApp
             // removeFromCart
             // 
             this.removeFromCart.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.removeFromCart.Location = new System.Drawing.Point(12, 356);
+            this.removeFromCart.Location = new System.Drawing.Point(7, 356);
             this.removeFromCart.Name = "removeFromCart";
-            this.removeFromCart.Size = new System.Drawing.Size(195, 48);
+            this.removeFromCart.Size = new System.Drawing.Size(87, 48);
             this.removeFromCart.TabIndex = 29;
             this.removeFromCart.Text = "Fjern fra vogn";
             this.removeFromCart.UseVisualStyleBackColor = true;
@@ -357,11 +358,23 @@ namespace PizzaApp
             this.label5.TabIndex = 35;
             this.label5.Text = "Størrelse";
             // 
+            // orderButton
+            // 
+            this.orderButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.orderButton.Location = new System.Drawing.Point(114, 355);
+            this.orderButton.Name = "orderButton";
+            this.orderButton.Size = new System.Drawing.Size(87, 48);
+            this.orderButton.TabIndex = 36;
+            this.orderButton.Text = "Bestil";
+            this.orderButton.UseVisualStyleBackColor = true;
+            this.orderButton.Click += new System.EventHandler(this.orderButton_Click);
+            // 
             // pizzaApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(803, 484);
+            this.Controls.Add(this.orderButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -426,6 +439,7 @@ namespace PizzaApp
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button orderButton;
     }
 }
 

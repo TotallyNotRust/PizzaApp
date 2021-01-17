@@ -336,5 +336,10 @@ namespace PizzaApp
                 customPizzaButon.Text = "Lav selv pizza";
             }
         }
+
+        private void orderButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Ordrer placeret");
+        }
     }
 }
